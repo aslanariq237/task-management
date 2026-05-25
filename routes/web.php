@@ -33,6 +33,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/project/form/{project}', [ProjectController::class, 'edit'])->name('projects.edit');
     Route::post('/project', [ProjectController::class, 'store'])->name('projects.store');
     Route::post('/project/{project}', [ProjectController::class, 'update'])->name('projects.update');    
+    Route::delete('/project/{id}', [ProjectController::class, 'destroy'])->name('projects.delete');
 
     //reports
     Route::get('/reports', [ReportController::class, 'index'])->name('reports.index');

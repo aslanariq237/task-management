@@ -47,7 +47,14 @@
                                         <a href="{{ route('projects.edit', $project->id)}}" class="text-blue-600 hover:text-blue-700 transition">
                                             <i class="fas fa-edit text-xl"></i>
                                         </a>
-                                        <a href="#" onclick="return confirm('Yakin hapus project ini?')" 
+                                        <form id="deleteForm" method="POST" style="display: none;">
+                                            @csrf
+                                            @method('DELETE')
+                                        </form>
+
+                                        <!-- Tombol Delete -->
+                                        <a href="#" 
+                                        onclick="confirmDelete({{ $project->id }})" 
                                         class="text-red-600 hover:text-red-700 transition">
                                             <i class="fas fa-trash text-xl"></i>
                                         </a>
@@ -60,23 +67,7 @@
                                     Belum ada data Project.
                                 </td>
                             </tr>
-                        @endforelse                         
-                        {{-- <tr class="hover:bg-gray-50 transition">
-                            <td class="py-5 font-medium text-gray-400">1</td>
-                            <td class="py-5 font-medium">Instalasi CCTV di PT ABC</td>
-                            <td class="py-5 text-gray-600">19 Apr 2026</td>
-                            <td class="py-5 text-center">
-                                <div class="flex items-center justify-center gap-3">
-                                    <a href="#" class="text-blue-600 hover:text-blue-700 transition">
-                                        <i class="fas fa-edit text-xl"></i>
-                                    </a>
-                                    <a href="#" onclick="return confirm('Yakin hapus project ini?')" 
-                                       class="text-red-600 hover:text-red-700 transition">
-                                        <i class="fas fa-trash text-xl"></i>
-                                    </a>
-                                </div>
-                            </td>
-                        </tr> --}}
+                        @endforelse
                     </tbody>
                 </table>
             </div>        
@@ -97,4 +88,36 @@
             </div> --}}
         </div>
     </div>
+
+    <script>
+    function confirmDelete(id) {
+        Swal.fire({
+            title: 'Yakin ingin menghapus?',
+            text: "Data project ini dan semua task di dalamnya akan terhapus permanen!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#ef4444',
+            cancelButtonColor: '#6b7280',
+            confirmButtonText: 'Ya, Hapus!',
+            cancelButtonText: 'Batal',
+            reverseButtons: true
+        }).then((result) => {
+            if (result.isConfirmed) {
+                const form = document.getElementById('deleteForm');
+                form.action = `/projects/${id}`;   // Laravel resource route otomatis pakai DELETE
+                form.submit();
+
+                Swal.fire({
+                    title: 'Menghapus...',
+                    text: 'Mohon tunggu sebentar',
+                    allowOutsideClick: false,
+                    showConfirmButton: false,
+                    willOpen: () => {
+                        Swal.showLoading();
+                    }
+                });
+            }
+        });
+    }
+</script>
 </x-app-layout>

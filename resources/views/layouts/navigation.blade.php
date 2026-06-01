@@ -17,7 +17,9 @@
         <div class="flex items-center gap-3">
             <div class="text-right">
                 <p class="font-medium text-sm">{{ Auth::user()->name ?? 'Admin' }}</p>
-                <p class="text-xs text-gray-500">Staff</p>
+                <p class="text-xs text-gray-500">
+                    {{ ucfirst(Auth::user()->getRoleNames()->first() ?? 'staff') }}
+                </p>
             </div>
             <div class="w-9 h-9 bg-blue-600 text-white rounded-2xl flex items-center justify-center font-bold">
                 {{ substr(Auth::user()->name ?? 'A', 0, 1) }}

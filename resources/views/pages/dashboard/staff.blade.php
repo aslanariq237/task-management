@@ -23,10 +23,37 @@
                 </a>
             </div>
 
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">                
+                @forelse ($tasks as $index => $task)
+                    <div class="bg-white rounded-3xl p-6 shadow-sm border border-gray-100 hover:shadow-md transition-all">
+                        <div class="flex justify-between items-start">
+                            <div>
+                                <p class="font-medium text-gray-800">
+                                    {{ $task->name}}
+                                </p>
+                                <p class="text-sm text-gray-500 mt-1">
+                                    {{ $task->started_at->format('D, h:i A') }}</p>
+                            </div>
+                            @php                                        
+                                $statusClasses = [
+                                    'completed'   => 'bg-green-100 text-green-700',
+                                    'on_progress' => 'bg-blue-100 text-blue-700',
+                                    'overdue'     => 'bg-red-100 text-red-700'
+                                ];                                        
+                                $currentClass = $statusClasses[$task->status] ?? 'bg-gray-100 text-gray-700';
+                            @endphp
+                            <span 
+                                class="px-4 py-1.5 text-xs font-medium rounded-2xl {{$currentClass}}">
+                                {{ 
+                                    $task->status == 'on_progress' ? "On Progress" : $task->status
+                                }}
+                            </span>
+                        </div>
+                    </div>
+                @empty
+                @endforelse
                 <!-- Task 1 -->
-                <div class="bg-white rounded-3xl p-6 shadow-sm border border-gray-100 hover:shadow-md transition-all">
+                {{-- <div class="bg-white rounded-3xl p-6 shadow-sm border border-gray-100 hover:shadow-md transition-all">
                     <div class="flex justify-between items-start">
                         <div>
                             <p class="font-medium text-gray-800">Update project documentation</p>
@@ -75,7 +102,7 @@
                             In Progress
                         </span>
                     </div>
-                </div>
+                </div> --}}
 
             </div>
         </div>

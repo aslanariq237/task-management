@@ -21,6 +21,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/task', [TaskController::class, 'index'])->name('tasks.index');
     Route::get('/task/form', [TaskController::class, 'create'])->name('tasks.form');
     Route::get('/task/form/{task}', [TaskController::class, 'edit'])->name('tasks.edit');
+    Route::put('/task/form/{task}', [TaskController::class, 'update'])->name('tasks.update');
     Route::get('/task/{task}', [TaskController::class, 'show'])->name('tasks.show');
     Route::post('/task', [TaskController::class, 'store'])->name('tasks.store');            
 

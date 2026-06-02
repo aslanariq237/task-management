@@ -2,13 +2,9 @@
     @section('page-title', 'Report')
     @section('page-link', 'report - index')
     <x-slot name="title">Reports</x-slot>
-
-    <div class="max-w-7xl mx-auto">            
-        <!-- Filters -->
+    <div class="max-w-7xl mx-auto">                    
         <div class="bg-white rounded-3xl shadow-sm p-6 mb-6">
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-
-                <!-- Search -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">                
                 <div>
                     <label class="block text-xs font-medium text-gray-500 mb-1">Cari Tugas</label>
                     <div class="relative">
@@ -17,9 +13,7 @@
                                class="w-full bg-gray-100 border border-transparent focus:border-gray-300 rounded-2xl py-3 px-5 pl-12 text-sm focus:outline-none">
                         <i class="fas fa-search absolute left-5 top-3.5 text-gray-400"></i>
                     </div>
-                </div>
-
-                <!-- Project Filter -->
+                </div>                
                 <div>
                     <label class="block text-xs font-medium text-gray-500 mb-1">Project</label>
                     <select id="project-filter" 
@@ -29,9 +23,7 @@
                         <option value="2">PT Mandiri Persero</option>
                         <option value="3">Instalasi Security Access</option>
                     </select>
-                </div>
-
-                <!-- Status Filter -->
+                </div>                
                 <div>
                     <label class="block text-xs font-medium text-gray-500 mb-1">Status</label>
                     <select id="status-filter" 
@@ -41,17 +33,13 @@
                         <option value="in_progress">In Progress</option>
                         <option value="overdue">Overdue</option>
                     </select>
-                </div>
-
-                <!-- Date Filter -->
+                </div>                
                 <div>
                     <label class="block text-xs font-medium text-gray-500 mb-1">Tanggal Selesai</label>
                     <input type="date" id="date-filter"
                            class="w-full bg-gray-100 border border-transparent focus:border-gray-300 rounded-2xl py-3 px-5 text-sm focus:outline-none">
                 </div>
-            </div>
-
-            <!-- Filter Buttons -->
+            </div>            
             <div class="flex justify-end gap-3 mt-6">
                 <button onclick="resetFilters()" 
                         class="px-6 py-3 text-gray-600 hover:bg-gray-100 rounded-2xl transition">
@@ -62,9 +50,7 @@
                     Terapkan Filter
                 </button>
             </div>
-        </div>
-
-        <!-- Table -->
+        </div>        
         <div class="bg-white rounded-3xl shadow-sm overflow-hidden">
             <div class="overflow-x-auto">
                 <table class="w-full">
@@ -79,41 +65,18 @@
                             <th class="py-5 px-6 text-center">AKSI</th>
                         </tr>
                     </thead>
-                    <tbody class="divide-y divide-gray-100 text-sm" id="task-table">
-                        <!-- Data akan diisi di sini (contoh) -->
-                        {{-- @foreach(range(1,6) as $i)
-                        <tr class="hover:bg-gray-50 transition">
-                            <td class="py-5 px-6 font-medium text-gray-400">{{$i}}</td>
-                            <td class="py-5 px-6 font-medium">Survey Lokasi Gedung Baru</td>
-                            <td class="py-5 px-6 text-gray-600">Instalasi CCTV</td>
-                            <td class="py-5 px-6 text-gray-600">17 Apr 2026</td>
-                            <td class="py-5 px-6 text-gray-700">Udin Saputro</td>
-                            <td class="py-5 px-6">
-                                <span class="px-4 py-1.5 bg-green-100 text-green-700 text-xs font-medium rounded-2xl">Selesai</span>
-                            </td>
-                            <td class="py-5 px-6 text-center">
-                                <div class="flex items-center justify-center gap-4">
-                                    <button class="text-yellow-500 hover:text-yellow-600 transition">
-                                        <i class="fas fa-edit text-xl"></i>
-                                    </button>
-                                    <button class="text-green-600 hover:text-green-700 transition">
-                                        <i class="fas fa-file-download text-xl"></i>
-                                    </button>
-                                </div>
-                            </td>
-                        </tr>
-                        @endforeach --}}
+                    <tbody class="divide-y divide-gray-100 text-sm">                                                
                         @forelse ($tasks as $index => $task)
                             <tr class="hover:bg-gray-50 transition">
-                                <td class="py-5 font-medium text-gray-400">
+                                <td class="pb-4  font-medium text-gray-400">
                                     {{ ($tasks->currentPage() - 1) * $tasks->perPage() + $loop->iteration }}
                                 </td>
-                                <td class="py-5 font-medium">{{ $task->name }}</td>
+                                <td class="py-5 px-4 font-medium">{{ $task->name }}</td>
                                 <td class="py-5 text-gray-600">{{ $task->project->name }}</td>
                                 <td class="py-5 text-gray-600">{{  $task->ended_at->format('D M y') }}</td>
                                 <td class="py-5 text-gray-600">{{  $task->employee->name }}</td>
                                 <td class="py-5">
-                                    <span class="px-4 py-1.5 bg-blue-100 text-blue-700 text-xs font-medium rounded-2xl">
+                                    <span class="px-4 py-1.5 bg-green-100 text-green-700 text-xs font-medium rounded-2xl">
                                         {{
                                             $task->status == 'on_progress' 
                                                 ? 'In Progress'
@@ -148,18 +111,6 @@
                     {{ $tasks->links() }}
                 </div>
             @endif
-
-            <!-- Pagination -->
-            {{-- <div class="flex items-center justify-between px-6 py-5 border-t">
-                <p class="text-gray-500 text-sm">Menampilkan 1-6 dari 12 task</p>
-                
-                <div class="flex gap-2">
-                    <button class="px-4 py-2 border border-gray-300 rounded-2xl hover:bg-gray-50">Previous</button>
-                    <button class="px-4 py-2 bg-blue-600 text-white rounded-2xl">1</button>
-                    <button class="px-4 py-2 border border-gray-300 rounded-2xl hover:bg-gray-50">2</button>
-                    <button class="px-4 py-2 border border-gray-300 rounded-2xl hover:bg-gray-50">Next</button>
-                </div>
-            </div> --}}
         </div>
     </div>
 

@@ -16,7 +16,7 @@
 
         @include('pages.projects.form', [
             'project' => $project,
-            'employees' => $employees,
+            'employees' => $employees,            
             'route' => route('projects.update', $project),
             'method' => 'PUT'
         ])

@@ -22,8 +22,10 @@ return new class extends Migration
                   ->on('employees')
                   ->onDelete('cascade');
             $table->string('code');
-            $table->string('name');
+            $table->string('name');                    
             $table->string('description');
+            $table->string('to_do')->nullable();
+            $table->string('notes')->nullable();
             $table->enum('status', [                
                 'completed',
                 'overdue',

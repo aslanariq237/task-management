@@ -52,26 +52,36 @@
                     placeholder="Jelaskan deskripsi project ini...">{{ old('description', $project?->description) }}
                 </textarea>
             </div>
+            <div class="mt-4">
+                <div class="flex items-center gap-3 mb-6">
+                    <div class="w-6 h-6 bg-blue-100 text-blue-600 rounded-xl flex items-center justify-center text-sm font-bold">2</div>
+                    <h2 class="text-xl font-semibold">Informasi Vendor</h2>
+                </div>
+
+                <label class="block text-sm font-medium text-gray-700 mb-2">
+                    Pilih Vendor <span class="text-red-500">*</span>
+                </label>
+
+                <div class="relative">
+                    <input type="text" 
+                        id="vendor-search" 
+                        placeholder="Cari nama atau kode vendor..." 
+                        class="w-full border border-gray-300 focus:border-blue-500 rounded-2xl px-5 py-4 focus:outline-none text-base">
+
+                    <div id="vendor-results" 
+                        class="absolute z-50 w-full bg-white border border-gray-200 rounded-3xl mt-2 shadow-xl max-h-72 overflow-auto hidden">
+                    </div>
+                </div>                
+                <div id="selected-vendor" class="mt-4"></div>                
+                <input type="hidden" name="vendor_id" id="vendor-id-input">
+            </div>        
         </div>
     </div>    
     <div class="mb-10">
         <div class="flex items-center gap-3 mb-6">
-            <div class="w-6 h-6 bg-blue-100 text-blue-600 rounded-xl flex items-center justify-center text-sm font-bold">2</div>
+            <div class="w-6 h-6 bg-blue-100 text-blue-600 rounded-xl flex items-center justify-center text-sm font-bold">3</div>
                 <h2 class="text-xl font-semibold">Tim Project</h2>
-            </div>
-            
-            {{-- <div class="mb-8">
-                <label class="block text-sm font-medium text-gray-700 mb-2">Project Leader <span class="text-red-500">*</span></label>
-                <select name="employee_id" class="w-full border border-gray-300 focus:border-blue-500 rounded-2xl px-5 py-3 focus:outline-none" required>
-                    <option value="">Pilih Project Leader</option>
-                    @foreach($employees as $employee)
-                        <option value="{{ $employee->id }}" 
-                            {{ old('employee_id', $project?->employee_id) == $employee->id ? 'selected' : '' }}>
-                            {{ $employee->name }}
-                        </option>
-                    @endforeach 
-                </select>
-            </div>             --}}
+            </div>                    
             <div>
                 <label class="block text-sm font-medium text-gray-700 mb-2">Tambah Anggota Tim (Staff)</label>                                        
                 <div class="relative">
@@ -86,7 +96,7 @@
     </div>        
     <div class="mb-10">
         <div class="flex items-center gap-3 mb-6">
-            <div class="w-6 h-6 bg-blue-100 text-blue-600 rounded-xl flex items-center justify-center text-sm font-bold">3</div>
+            <div class="w-6 h-6 bg-blue-100 text-blue-600 rounded-xl flex items-center justify-center text-sm font-bold">4</div>
             <h2 class="text-xl font-semibold">Timeline Project</h2>
         </div>
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -104,19 +114,19 @@
             </div>
         </div>
     </div>    
-    {{-- <div class="mb-10">
+    <div class="mb-10">
         <div class="flex items-center gap-3 mb-6">
-            <div class="w-6 h-6 bg-blue-100 text-blue-600 rounded-xl flex items-center justify-center text-sm font-bold">4</div>
+            <div class="w-6 h-6 bg-blue-100 text-blue-600 rounded-xl flex items-center justify-center text-sm font-bold">5</div>
             <h2 class="text-xl font-semibold">Lokasi Project (Opsional)</h2>
         </div>
         <input type="text" name="location" 
                value="{{ old('location', $project?->location) }}"
                class="w-full border border-gray-300 focus:border-blue-500 rounded-2xl px-5 py-3 focus:outline-none"
                placeholder="Masukkan lokasi project">
-    </div>     --}}
+    </div>    
     <div class="mb-10">
         <div class="flex items-center gap-3 mb-6">
-            <div class="w-6 h-6 bg-blue-100 text-blue-600 rounded-xl flex items-center justify-center text-sm font-bold">4</div>
+            <div class="w-6 h-6 bg-blue-100 text-blue-600 rounded-xl flex items-center justify-center text-sm font-bold">6</div>
             <h2 class="text-xl font-semibold">Status Project</h2>
         </div>
         <select name="status" class="w-full border border-gray-300 focus:border-blue-500 rounded-2xl px-5 py-3 focus:outline-none">
@@ -133,6 +143,87 @@
             placeholder="Tambahkan catatan penting terkait project ini...">{{ old('notes', $project?->notes) }}</textarea>
     </div>    
 </form>
+<script>
+    let selectedVendorId = null;
+
+    const vendorSearchInput = document.getElementById('vendor-search');
+    const vendorResults = document.getElementById('vendor-results');
+    const selectedVendorContainer = document.getElementById('selected-vendor');
+    const vendorIdInput = document.getElementById('vendor-id-input');
+
+    const allVendors = @json($vendors);   // pastikan $vendors dikirim dari controller
+
+    vendorSearchInput.addEventListener('input', function() {
+        const keyword = this.value.toLowerCase().trim();
+
+        if (keyword.length < 1) {
+            vendorResults.classList.add('hidden');
+            return;
+        }
+
+        const filtered = allVendors.filter(vendor => 
+            vendor.name.toLowerCase().includes(keyword) || 
+            (vendor.code && vendor.code.toLowerCase().includes(keyword))
+        );
+
+        let html = '';
+
+        filtered.forEach(vendor => {
+            html += `
+                <div onclick="selectVendor(${vendor.id}, '${vendor.name}', '${vendor.code || ''}')" 
+                     class="px-5 py-4 hover:bg-gray-100 cursor-pointer flex items-center gap-4 border-b last:border-0">
+                    <div class="w-10 h-10 bg-blue-100 text-blue-600 rounded-2xl flex items-center justify-center font-semibold text-lg">
+                        ${vendor.code ? vendor.code.substring(0,2) : 'V'}
+                    </div>
+                    <div class="flex-1">
+                        <p class="font-medium">${vendor.name}</p>
+                        ${vendor.code ? `<p class="text-xs text-gray-500">Kode: ${vendor.code}</p>` : ''}
+                        ${vendor.email ? `<p class="text-xs text-gray-500">${vendor.email}</p>` : ''}
+                    </div>
+                </div>
+            `;
+        });
+
+        vendorResults.innerHTML = html || '<div class="p-6 text-gray-500 text-center">Vendor tidak ditemukan</div>';
+        vendorResults.classList.remove('hidden');
+    });
+
+    function selectVendor(id, name, code) {
+        selectedVendorId = id;
+        vendorIdInput.value = id;
+
+        selectedVendorContainer.innerHTML = `
+            <div class="bg-blue-50 border border-blue-200 rounded-2xl p-4 flex items-center gap-4">
+                <div class="w-10 h-10 bg-blue-100 text-blue-600 rounded-2xl flex items-center justify-center font-semibold">
+                    ${code ? code.substring(0,2) : 'V'}
+                </div>
+                <div class="flex-1">
+                    <p class="font-medium">${name}</p>
+                    ${code ? `<p class="text-xs text-gray-500">Kode: ${code}</p>` : ''}
+                </div>
+                <button type="button" onclick="removeSelectedVendor()" 
+                        class="text-red-500 hover:text-red-700 text-xl leading-none">×</button>
+            </div>
+        `;
+
+        vendorSearchInput.value = '';
+        vendorResults.classList.add('hidden');
+    }
+
+    function removeSelectedVendor() {
+        selectedVendorId = null;
+        vendorIdInput.value = '';
+        selectedVendorContainer.innerHTML = '';
+        vendorSearchInput.focus();
+    }
+
+    // Close dropdown when clicking outside
+    document.addEventListener('click', function(e) {
+        if (!e.target.closest('#vendor-search')) {
+            vendorResults.classList.add('hidden');
+        }
+    });
+</script>
 
 <script>
     let selectedMembers = [];

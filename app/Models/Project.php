@@ -9,8 +9,10 @@ class Project extends Model
     protected $table = 'projects';
     protected $fillable = [
         'employee_id',
+        'vendor_id',
         'code',
         'name',
+        'location',
         'description',
         'status',
         'started_at',
@@ -23,5 +25,9 @@ class Project extends Model
 
     public function projectMember(){
         return $this->hasMany(ProjectMember::class);
-    }        
+    }   
+    
+    public function vendor(){
+        return $this->belongsTo(Vendor::class);
+    }
 }

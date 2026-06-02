@@ -17,8 +17,13 @@ return new class extends Migration
                   ->references('id')
                   ->on('employees')
                   ->onDelete('cascade');
+            $table->foreignId('vendor_id')
+                  ->references('id')
+                  ->on('vendors')
+                  ->onDelete('cascade');
             $table->string('code');
             $table->string('name');
+            $table->string('location')->nullable();
             $table->string('description');
             $table->enum('status', [
                 'planned',
@@ -31,6 +36,11 @@ return new class extends Migration
             $table->timestamps();
         });
     }
+
+    protected $casts = [
+        'started_at' => 'date',
+        'ended_at'   => 'date'
+    ];
 
     /**
      * Reverse the migrations.

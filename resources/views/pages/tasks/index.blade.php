@@ -72,15 +72,20 @@
                                             </a>
                                         @endif                                                                            
                                         @if($task->status != 'completed')
+                                            {{-- <a href="{{ route('tasks.show', $task) }}" 
+                                            class="bg-blue-600 hover:bg-blue-700 text-white text-xs font-medium px-4 py-2.5 rounded-2xl transition"
+                                            title="Lihat Detail">
+                                                <i class="fas fa-eye"></i>
+                                            </a> --}}
                                             <a href="{{ route('tasks.show', $task) }}" 
                                             class="bg-yellow-500 hover:bg-yellow-600 text-white text-xs font-medium px-4 py-2.5 rounded-2xl transition">
                                                 <i class="fas fa-edit"></i>
                                             </a>                                                                            
-                                            <a href="#" 
+                                            {{-- <a href="#" 
                                             onclick="confirmDelete({{ $task->id }})"
                                             class="bg-red-600 hover:bg-red-700 text-white text-xs font-medium px-4 py-2.5 rounded-2xl transition">
                                                 <i class="fas fa-trash"></i>
-                                            </a>
+                                            </a> --}}
                                         @endif
                                     </div>
                                 </td>

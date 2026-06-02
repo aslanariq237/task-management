@@ -109,7 +109,7 @@ class TaskController extends Controller
      */
     public function show(Task $task)
     {
-        $task->load('project', 'employee');
+        $task->load('project.vendor', 'employee');
         // return response()->json($task);
         return view('pages.tasks.show', compact('task'));
     }
@@ -126,45 +126,32 @@ class TaskController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, Task $task)
     {
         $validator = Validator::make($request->all(), [
-            'project_id'  => 'required|exists:projects,id',
-            'name'        => 'required|string|max:150',
-            'description' => 'nullable|string',
-            'status'      => 'required|in:todo,in_progress,review,completed,cancelled',
-            'started_at'  => 'required|date',
-            'ended_at'    => 'nullable|date|after_or_equal:started_at',
+            'to_do'   => 'required|string',
+            'notes'  => 'nullable|string',
         ]);
-
-        if ($validator->fails()) {
-            return redirect()->back()
-                             ->withErrors($validator)
-                             ->withInput();
-        }
 
         try {
             DB::beginTransaction();
 
             $task->update([
-                'project_id'  => $request->project_id,
-                'name'        => $request->name,
-                'description' => $request->description,
-                'status'      => $request->status,
-                'started_at'  => $request->started_at,
-                'ended_at'    => $request->ended_at,
+                'to_do'  => $request->to_do,
+                'notes' => $request->notes,
             ]);
 
             DB::commit();
 
-            // return redirect()->route('tasks.index')
-            //                  ->with('success', 'Task berhasil diperbarui.');
+            return redirect()->route('tasks.index')
+                            ->with('success', 'Task berhasil diperbarui.');
 
         } catch (\Exception $e) {
             DB::rollBack();
+
             return redirect()->back()
-                             ->with('error', 'Terjadi kesalahan: ' . $e->getMessage())
-                             ->withInput();
+                            ->with('error', 'Terjadi kesalahan saat memperbarui task.')
+                            ->withInput();
         }
     }
 

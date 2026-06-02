@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use App\Models\ProjectMember;
 use App\Models\Project;
 use App\Models\Employee;
+use App\Models\Vendor;
 
 class ProjectController extends Controller
 {
@@ -43,14 +44,15 @@ class ProjectController extends Controller
     public function create()
     {
         $employees = Employee::orderBy('name')->get();
-        return view('pages.projects.create', compact('employees'));
+        $vendors = Vendor::orderBy('name')->get();
+        return view('pages.projects.create', compact('employees', 'vendors'));
     }
 
     /**
      * Store a newly created resource in storage.
      */
     public function store(Request $request)    
-    {           
+    {        
         $validator = Validator::make($request->all(), [
             'name'        => 'required|string',
             'description' => 'nullable|string',
@@ -80,8 +82,10 @@ class ProjectController extends Controller
             
             $project = Project::create([
                 'employee_id' => Auth::user()->employee_id,
+                'vendor_id'   => $request->vendor_id,
                 'code'        => $newCode,
                 'name'        => $request->name,
+                'location'    => $request->location,
                 'description' => $request->description,
                 'status'      => $request->status ?? 'planned',
                 'started_at'  => $request->started_at,
@@ -135,8 +139,8 @@ class ProjectController extends Controller
      */
     public function show(Project $project)
     {
-        $project->load(['projectMember.employee']);
-        return view('pages.projects.show', compact('project'));
+        $project->load(['projectMember.employee', 'vendor']);
+        // return view('pages.projects.show', compact('project'));
     }
 
     /**
@@ -145,11 +149,12 @@ class ProjectController extends Controller
     public function edit(Project $project)
     {
         $project->load('projectMember');
-        $employees = Employee::orderBy('name')->get();
+        $employees = Employee::orderBy('name')->get(); 
+        $vendors = Vendor::orderBy('name')->get();
         
         $selectedMembers = $project->projectMember->pluck('employee_id')->toArray();
 
-        return view('pages.projects.edit', compact('project', 'employees', 'selectedMembers'));        
+        return view('pages.projects.edit', compact('project', 'employees', 'vendors', 'selectedMembers'));        
     }
 
     /**

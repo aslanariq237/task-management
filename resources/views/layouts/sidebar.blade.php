@@ -18,27 +18,28 @@
                 <i class="fas fa-home w-5 mr-3"></i> 
                 Dashboard
             </x-nav-link>
-            @hasanyrole('manager||admin')
+            @hasanyrole('manager')
                 <x-nav-link href="{{ route('projects.index') }}" :active="request()->routeIs('projects.*')">
                     <i class="fas fa-folder w-5 mr-3"></i> Projects
-                </x-nav-link>
+                </x-nav-link>                
             @endhasanyrole            
 
             <x-nav-link href="{{ route('tasks.index') }}" :active="request()->routeIs('tasks.*')">
                 <i class="fas fa-tasks w-5 mr-3"></i> 
                 Tasks
-            </x-nav-link>            
-
-            @hasanyrole('manager||admin')
-                <x-nav-link href="{{ route('employees.index') }}" :active="request()->routeIs('employees.*')">
-                    <i class="fas fa-users w-5 mr-3"></i> 
-                    Employees
-                </x-nav-link>
-
+            </x-nav-link>  
+            @hasanyrole('manager')            
                 <x-nav-link href="{{ route('reports.index') }}" :active="request()->routeIs('reports.*')">
                     <i class="fas fa-folder w-5 mr-3"></i> 
                     Reports
                 </x-nav-link>
+            @endhasanyrole             
+
+            @hasanyrole('admin')
+                <x-nav-link href="{{ route('employees.index') }}" :active="request()->routeIs('employees.*')">
+                    <i class="fas fa-users w-5 mr-3"></i> 
+                    Employees
+                </x-nav-link>                
             @endhasanyrole
         </div>
     </div>    

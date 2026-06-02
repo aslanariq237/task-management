@@ -46,10 +46,8 @@
                         <p class="text-gray-700 leading-relaxed">{{ $task->description ?? '-' }}</p>
                     </div>
                 </div>
-
                 <hr class="my-8">            
                 <h3 class="text-lg font-semibold mb-6">Informasi Pengerjaan</h3>                        
-
                 @csrf
                 @method('PUT')
 
@@ -59,18 +57,16 @@
                         <input type="text" 
                                name="client_name"
                                placeholder="PT ABC"
-                               value="{{ old('client_name', '') }}"
-                               class="w-full bg-gray-50 border border-gray-300 focus:border-blue-500 rounded-2xl px-5 py-3 focus:outline-none"
-                               @if($task->status === 'completed') disabled @endif>
+                               value="{{ old('client_name', $task->project?->vendor?->name) }}"
+                               class="w-full bg-gray-50 border border-gray-300 focus:border-blue-500 rounded-2xl px-5 py-3 focus:outline-none" disabled>
                     </div>
                     <div>
                         <label class="block text-sm text-gray-600 mb-2">Alamat Proyek <span class="text-red-500">*</span></label>
                         <input type="text" 
                                name="project_address"
                                placeholder="jln. ABC"
-                               value="{{ old('project_address', '') }}"
-                               class="w-full bg-gray-50 border border-gray-300 focus:border-blue-500 rounded-2xl px-5 py-3 focus:outline-none"
-                               @if($task->status === 'completed') disabled @endif>
+                               value="{{ old('project_address', $task->project?->vendor?->address) }}"
+                               class="w-full bg-gray-50 border border-gray-300 focus:border-blue-500 rounded-2xl px-5 py-3 focus:outline-none" disabled>
                     </div>
 
                     <div>
@@ -88,30 +84,17 @@
                         <input type="text" 
                                name="work_location"
                                placeholder="PT. ABC"
-                               value="{{ old('work_location', '') }}"
-                               class="w-full bg-gray-50 border border-gray-300 focus:border-blue-500 rounded-2xl px-5 py-3 focus:outline-none"
-                               @if($task->status === 'completed') disabled @endif>
+                               value="{{ old('work_location', $task->project?->location) }}"
+                               class="w-full bg-gray-50 border border-gray-300 focus:border-blue-500 rounded-2xl px-5 py-3 focus:outline-none" disabled>
                     </div>
                 </div>
-
                 <div class="mt-6">
                     <label class="block text-sm text-gray-600 mb-2">Pekerjaan yang Dilakukan</label>
-                    <textarea 
-                        name="work_done" 
-                        rows="4"
-                        placeholder="• Konfigurasi kamera ke DVR"
-                        class="w-full bg-gray-50 border border-gray-300 focus:border-blue-500 rounded-3xl px-5 py-4 focus:outline-none"
-                        @if($task->status === 'completed') disabled @endif>
-                    </textarea>
+                    <textarea name="to_do" rows="4" placeholder="• Konfigurasi kamera ke DVR" class="w-full bg-gray-50 border border-gray-300 focus:border-blue-500 rounded-3xl px-5 py-4 focus:outline-none"@if($task->status === 'completed') disabled @endif>{{old('to_do',$task->to_do)}}</textarea>
                 </div>
-
                 <div class="mt-6">
-                    <label class="block text-sm text-gray-600 mb-2">Catatan</label>
-                    <textarea name="notes" rows="3"
-                        class="w-full bg-gray-50 border border-gray-300 focus:border-blue-500 rounded-3xl px-5 py-4 focus:outline-none"
-                        @if($task->status === 'completed') disabled @endif>
-Semua perangkat berfungsi dengan baik. Menunggu setting remote access dari IT.
-                    </textarea>
+                    <label class="block text-sm text-gray-600 mb-2">Catatan (optional)</label>
+                    <textarea name="notes" rows="3" placeholder="• masukkan catatan disini (optional)" class="w-full bg-gray-50 border border-gray-300 focus:border-blue-500 rounded-3xl px-5 py-4 focus:outline-none" @if($task->status === 'completed') disabled @endif>{{old('notes',$task->notes)}}</textarea>
                 </div>                                           
             </div>
         </form>

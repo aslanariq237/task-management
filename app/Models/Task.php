@@ -13,6 +13,8 @@ class Task extends Model
         'code',
         'name',
         'description',
+        'to_do',
+        'notes',
         'status',
         'started_at',
         'ended_at'

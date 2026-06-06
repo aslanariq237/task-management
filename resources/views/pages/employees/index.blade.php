@@ -18,13 +18,13 @@
                     <a href="#" class="px-6 py-3 border-b-2 border-blue-600 text-blue-600 font-medium">Semua Tugas</a>
                     <a href="#" class="px-6 py-3 text-gray-500 hover:text-gray-700">Selesai</a>
                 </div> --}}
-                {{-- <div class="md:mt-0">                    
-                    <a href="{{ route('tasks.form') }}" 
+                <div class="md:mt-0">                    
+                    <a href="{{ route('employees.create') }}" 
                     class="bg-blue-600 hover:bg-blue-700 text-white px-5 py-3 rounded-2xl font-medium flex items-center gap-2 transition">
                         <i class="fas fa-plus"></i>
                         Tambah Employee Baru
                     </a>
-                </div> --}}
+                </div>
             </div>            
             <div class="mt-6 overflow-x-auto">
                 <table class="w-full">
@@ -60,39 +60,15 @@
                                     Belum ada data Task.
                                 </td>
                             </tr>
-                        @endforelse                        
-                        {{-- <tr class="hover:bg-gray-50 transition">
-                            <td class="py-5 font-medium text-gray-400">1</td>
-                            <td class="py-5 font-medium">Dotang</td>
-                            <td class="py-5 text-gray-600">dotang@gmail.com</td>
-                            <td class="py-5 text-gray-600">19 Apr 2026</td>
-                            <td class="py-5">
-                                <span class="px-4 py-1.5 bg-green-100 text-green-700 text-xs font-medium rounded-2xl">Aktif</span>
-                            </td>
-                            <td class="py-5 text-center">
-                                <a href="#" class="bg-blue-600 hover:bg-blue-700 text-white text-xs font-medium px-5 py-2.5 rounded-2xl inline-flex items-center gap-1">
-                                    Detail <span class="text-lg leading-none">→</span>
-                                </a>
-                            </td>
-                        </tr>                  --}}
+                        @endforelse                                                
                     </tbody>
                 </table>
             </div>
-            {{-- @if ($employees->hasPages())
+            @if ($employees->hasPages())
                 <div class="bg-white px-6 py-4 border-t border-gray-200">
                     {{ $employees->links() }}
                 </div>
-            @endif --}}
-            {{-- <div class="flex items-center justify-between mt-8 text-sm">
-                <p class="text-gray-500">Menampilkan 1-6 dari 12 tugas</p>
-                
-                <div class="flex gap-2">
-                    <button class="px-4 py-2 border border-gray-300 rounded-2xl hover:bg-gray-50">Previous</button>
-                    <button class="px-4 py-2 bg-blue-600 text-white rounded-2xl">1</button>
-                    <button class="px-4 py-2 border border-gray-300 rounded-2xl hover:bg-gray-50">2</button>
-                    <button class="px-4 py-2 border border-gray-300 rounded-2xl hover:bg-gray-50">Next</button>
-                </div>
-            </div> --}}
+            @endif            
         </div>
     </div>
 </x-app-layout>

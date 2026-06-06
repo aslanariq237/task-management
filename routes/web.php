@@ -6,6 +6,7 @@ use App\Http\Controllers\TaskController;
 use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\ReportController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\VendorController;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware('auth')->group(function () {
@@ -38,8 +39,18 @@ Route::middleware('auth')->group(function () {
 
     //reports
     Route::get('/reports', [ReportController::class, 'index'])->name('reports.index');
+    Route::get('/reports/pdf/{task}', [ReportController::class, 'exportPDF'])->name('reports.pdf');
+
     //employee
-    Route::get('/employee', [EmployeeController::class, 'index'])->name('employees.index');    
+    Route::get('/employee', [EmployeeController::class, 'index'])->name('employees.index');
+    Route::get('/employee/form', [EmployeeController::class, 'create'])->name('employees.create');
+    Route::post('/employee/form', [EmployeeController::class, 'store'])->name('employees.store');
+
+    //vendors
+    Route::get('/vendor', [VendorController::class, 'index'])->name('vendors.index');
+    Route::get('/vendor/form', [VendorController::class, 'create'])->name('vendors.create');
+    Route::post('/vendor/form', [VendorController::class, 'store'])->name('vendors.store');
+    Route::get('/vendor/form/{vendor}', [VendorController::class, 'edit'])->name('vendors.edit');
 });
 
 require __DIR__.'/auth.php';

@@ -18,6 +18,7 @@ return new class extends Migration
                   ->on('employees')
                   ->onDelete('cascade');
             $table->foreignId('vendor_id')
+                  ->nullable()
                   ->references('id')
                   ->on('vendors')
                   ->onDelete('cascade');

@@ -24,6 +24,8 @@ return new class extends Migration
             $table->string('code');
             $table->string('name');                    
             $table->string('description');
+            $table->string('client')->nullable();
+            $table->string('address')->nullable();
             $table->string('to_do')->nullable();
             $table->string('notes')->nullable();
             $table->enum('status', [                

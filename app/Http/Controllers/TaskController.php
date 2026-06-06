@@ -5,7 +5,9 @@ namespace App\Http\Controllers;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Session\TokenMismatchException;
 use RealRashid\SweetAlert\Facades\Alert;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use App\Models\TaskDocumentation;
 use Illuminate\Http\Request;
 use App\Models\Project;
 use App\Models\Employee;
@@ -20,9 +22,16 @@ class TaskController extends Controller
      */
     public function index(Request $request)
     {
+        $user = Auth::user();
         $query = Task::query()
                 ->with('project')
                 ->latest();
+
+        $userRoles = DB::table('model_has_roles')
+                     ->join('roles', 'model_has_roles.role_id', '=', 'roles.id')
+                     ->where('model_has_roles.model_id', $user->id)
+                     ->pluck('roles.name')
+                     ->toArray();
         if ($request->filled('search')) {
             $search = $request->search;
 
@@ -31,6 +40,9 @@ class TaskController extends Controller
                 $q->where('code', 'like', "%{$search}%")
                 ->orWhere('name', 'like', "%{$search}%");                
             });            
+        }
+        if(in_array('staff', $userRoles)){
+            $query->where('assigned_at', $user->id);
         }
 
         $tasks = $query
@@ -109,7 +121,7 @@ class TaskController extends Controller
      */
     public function show(Task $task)
     {
-        $task->load('project.vendor', 'employee');
+        $task->load('project.vendor', 'employee', 'images');
         // return response()->json($task);
         return view('pages.tasks.show', compact('task'));
     }
@@ -127,19 +139,40 @@ class TaskController extends Controller
      * Update the specified resource in storage.
      */
     public function update(Request $request, Task $task)
-    {
+    {               
         $validator = Validator::make($request->all(), [
-            'to_do'   => 'required|string',
-            'notes'  => 'nullable|string',
+            'to_do'     => 'required|string',
+            'notes'     => 'nullable|string',            
         ]);
 
         try {
             DB::beginTransaction();
 
             $task->update([
+                'status' => $request->status,
+                'client' => $request->client,
+                'address'=> $request->address,
                 'to_do'  => $request->to_do,
-                'notes' => $request->notes,
-            ]);
+                'notes'  => $request->notes,
+                'started_at'=> $request->started_at,
+                'ended_at'=> $request->ended_at,
+            ]);       
+            // return response()->json($request->hasFile('images'));
+            if ($request->hasFile('images')) {
+                foreach ($request->file('images') as $image) {
+                    $filename = time() . '_' . uniqid() . '.' . $image->getClientOriginalExtension();
+                    $path = $image->store('task_documentations', 'public');
+
+                    TaskDocumentation::create([
+                        'task_id'     => $task->id,
+                        'project_id'  => $task->project_id,
+                        'employee_id' => Auth::user()->employee_id ?? null,
+                        'image_url'   => $path,
+                        'location'    => $request->work_location ?? $request->address,
+                        'taken_at'    => now(),
+                    ]);
+                }
+            }
 
             DB::commit();
 

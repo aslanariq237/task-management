@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
 use App\Models\Employee;
+use App\Models\User;
+use Spatie\Permission\Models\Role;
 
 class EmployeeController extends Controller
 {
@@ -37,20 +39,20 @@ class EmployeeController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create(Employee $employee)
     {
-        //
+        $roles = Role::where('name', '!=', 'admin')->get();                
+        return view('pages.employees.create', compact('employee', 'roles'));
     }
 
     /**
      * Store a newly created resource in storage.
      */
     public function store(Request $request)
-    {
-        $validator = Validator::make($request->all(), [
-            'code'  => 'required|string|max:20|unique:employees,code',
-            'name'  => 'required|string|max:100',
-            'email' => 'required|email|max:100|unique:employees,email',
+    {                
+        $validator = Validator::make($request->all(), [            
+            'name'  => 'required|string',
+            'email' => 'required|email',
         ]);
 
         if ($validator->fails()) {
@@ -59,14 +61,33 @@ class EmployeeController extends Controller
                              ->withInput();
         }
 
-        Employee::create([
-            'code'  => strtoupper($request->code),
+        $prefix = $this->code;
+        $lastCode = Employee::latest()->first();
+        $lastNumber = $lastCode
+                ? intval(substr($lastCode->code, 4))
+                : 1000;
+        $newNumber = $lastNumber + 1;
+        $newCode = "{$prefix}-{$newNumber}"; 
+
+        $employee = Employee::create([
+            'code'  => $newCode,
             'name'  => $request->name,
             'email' => strtolower($request->email),
         ]);
 
-        // return redirect()->route('employees.index')
-        //                  ->with('success', 'Karyawan berhasil ditambahkan.');
+        $user = User::firstOrCreate([
+            'employee_id'   => $employee->id,
+            'name'          => $employee->name,
+            'email'         => $employee->email,
+            'password'      => bcrypt($request->password),
+        ]);
+
+        $user->assignRole($request->role);
+
+
+
+        return redirect()->route('employees.index')
+                         ->with('success', 'Karyawan berhasil ditambahkan.');
     }
 
     /**

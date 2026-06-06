@@ -90,33 +90,7 @@ class ProjectController extends Controller
                 'status'      => $request->status ?? 'planned',
                 'started_at'  => $request->started_at,
                 'ended_at'    => $request->ended_at,
-            ]);            
-
-            // Tambahkan Members (jika ada)
-            if (!empty($request->members)) {
-                $memberIds = $request->members;
-                // $memberIds = array_filter(explode(',', $request->members));
-
-                $membersData = [];
-                foreach ($memberIds as $employeeId) {
-                    $employeeId = (int) trim($employeeId);
-                    
-                    // Hindari duplikat dengan Project Leader
-                    if ($employeeId && $employeeId != $request->employee_id) {
-                        $membersData[] = [
-                            'project_id' => $project->id,
-                            'employee_id' => $employeeId,
-                            'joined_at'   => now(),
-                            'created_at'  => now(),
-                            'updated_at'  => now(),
-                        ];
-                    }
-                }
-
-                if (count($membersData) > 0) {
-                    ProjectMember::insert($membersData);
-                }
-            }
+            ]);                                    
 
             DB::commit();
 

@@ -51,52 +51,12 @@
                     class="w-full border border-gray-300 focus:border-blue-500 rounded-3xl px-5 py-4 focus:outline-none"
                     placeholder="Jelaskan deskripsi project ini...">{{ old('description', $project?->description) }}
                 </textarea>
-            </div>
-            <div class="mt-4">
-                <div class="flex items-center gap-3 mb-6">
-                    <div class="w-6 h-6 bg-blue-100 text-blue-600 rounded-xl flex items-center justify-center text-sm font-bold">2</div>
-                    <h2 class="text-xl font-semibold">Informasi Vendor</h2>
-                </div>
-
-                <label class="block text-sm font-medium text-gray-700 mb-2">
-                    Pilih Vendor <span class="text-red-500">*</span>
-                </label>
-
-                <div class="relative">
-                    <input type="text" 
-                        id="vendor-search" 
-                        placeholder="Cari nama atau kode vendor..." 
-                        class="w-full border border-gray-300 focus:border-blue-500 rounded-2xl px-5 py-4 focus:outline-none text-base">
-
-                    <div id="vendor-results" 
-                        class="absolute z-50 w-full bg-white border border-gray-200 rounded-3xl mt-2 shadow-xl max-h-72 overflow-auto hidden">
-                    </div>
-                </div>                
-                <div id="selected-vendor" class="mt-4"></div>                
-                <input type="hidden" name="vendor_id" id="vendor-id-input">
-            </div>        
-        </div>
-    </div>    
-    <div class="mb-10">
-        <div class="flex items-center gap-3 mb-6">
-            <div class="w-6 h-6 bg-blue-100 text-blue-600 rounded-xl flex items-center justify-center text-sm font-bold">3</div>
-                <h2 class="text-xl font-semibold">Tim Project</h2>
-            </div>                    
-            <div>
-                <label class="block text-sm font-medium text-gray-700 mb-2">Tambah Anggota Tim (Staff)</label>                                        
-                <div class="relative">
-                    <input type="text" id="member-search" 
-                        placeholder="Cari nama staff..." 
-                        class="w-full border border-gray-300 focus:border-blue-500 rounded-2xl px-5 py-3 focus:outline-none">
-                <div id="search-results" class="absolute z-50 w-full bg-white border border-gray-200 rounded-2xl mt-2 shadow-lg max-h-60 overflow-auto hidden"></div>
-            </div>                
-            <div id="selected-members" class="mt-4 flex flex-wrap gap-2"></div>                
-            <input type="hidden" name="members[]" id="members-input">
+            </div>                  
         </div>
     </div>        
     <div class="mb-10">
         <div class="flex items-center gap-3 mb-6">
-            <div class="w-6 h-6 bg-blue-100 text-blue-600 rounded-xl flex items-center justify-center text-sm font-bold">4</div>
+            <div class="w-6 h-6 bg-blue-100 text-blue-600 rounded-xl flex items-center justify-center text-sm font-bold">2</div>
             <h2 class="text-xl font-semibold">Timeline Project</h2>
         </div>
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -116,7 +76,7 @@
     </div>    
     <div class="mb-10">
         <div class="flex items-center gap-3 mb-6">
-            <div class="w-6 h-6 bg-blue-100 text-blue-600 rounded-xl flex items-center justify-center text-sm font-bold">5</div>
+            <div class="w-6 h-6 bg-blue-100 text-blue-600 rounded-xl flex items-center justify-center text-sm font-bold">3</div>
             <h2 class="text-xl font-semibold">Lokasi Project (Opsional)</h2>
         </div>
         <input type="text" name="location" 
@@ -126,7 +86,7 @@
     </div>    
     <div class="mb-10">
         <div class="flex items-center gap-3 mb-6">
-            <div class="w-6 h-6 bg-blue-100 text-blue-600 rounded-xl flex items-center justify-center text-sm font-bold">6</div>
+            <div class="w-6 h-6 bg-blue-100 text-blue-600 rounded-xl flex items-center justify-center text-sm font-bold">4</div>
             <h2 class="text-xl font-semibold">Status Project</h2>
         </div>
         <select name="status" class="w-full border border-gray-300 focus:border-blue-500 rounded-2xl px-5 py-3 focus:outline-none">

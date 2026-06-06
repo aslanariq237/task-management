@@ -86,13 +86,12 @@
                                     </span>
                                 </td>
                                 <td class="py-5 px-6 text-center">
-                                    <div class="flex items-center justify-center gap-4">
-                                        <button class="text-yellow-500 hover:text-yellow-600 transition">
-                                            <i class="fas fa-edit text-xl"></i>
-                                        </button>
-                                        <button class="text-green-600 hover:text-green-700 transition">
+                                    <div class="flex items-center justify-center gap-4">                                        
+                                        <a 
+                                            href="{{ route('reports.pdf', $task)}}"
+                                            class="text-green-600 hover:text-green-700 hover:cursor-auto transition">
                                             <i class="fas fa-file-download text-xl"></i>
-                                        </button>
+                                        </a>
                                     </div>
                                 </td>
                             </tr>  

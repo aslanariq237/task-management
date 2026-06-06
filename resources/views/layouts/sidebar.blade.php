@@ -24,15 +24,17 @@
                 </x-nav-link>                
             @endhasanyrole            
 
-            <x-nav-link href="{{ route('tasks.index') }}" :active="request()->routeIs('tasks.*')">
-                <i class="fas fa-tasks w-5 mr-3"></i> 
-                Tasks
-            </x-nav-link>  
+            @hasanyrole('staff||manager')
+                <x-nav-link href="{{ route('tasks.index') }}" :active="request()->routeIs('tasks.*')">
+                    <i class="fas fa-tasks w-5 mr-3"></i> 
+                    Tasks
+                </x-nav-link>
+            @endhasanyrole  
             @hasanyrole('manager')            
                 <x-nav-link href="{{ route('reports.index') }}" :active="request()->routeIs('reports.*')">
                     <i class="fas fa-folder w-5 mr-3"></i> 
                     Reports
-                </x-nav-link>
+                </x-nav-link>                
             @endhasanyrole             
 
             @hasanyrole('admin')

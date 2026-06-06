@@ -1,10 +1,13 @@
 <x-app-layout>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/id.js"></script>
     @section('page-title', 'Task Detail')
     @section('page-link', 'Tasks - Detail')
     <x-slot name="title">Detail Tugas</x-slot>
 
     <div class="max-w-7xl mx-auto">                
-        <form action="{{ route('tasks.update', $task) }}" method="POST">
+        <form action="{{ route('tasks.update', $task) }}" method="POST" enctype="multipart/form-data">
             <div class="flex justify-between gap-4 mb-8">                                
                 <div></div>
                 <div class="flex items-center gap-4">
@@ -38,7 +41,7 @@
                     </div>
                     <div>
                         <p class="text-sm text-gray-500 mb-1">DITUGASKAN KEPADA</p>
-                        <p class="font-medium">{{ $task->employee->name ?? '-' }} <span class="text-gray-500 text-sm">(Staff)</span></p>
+                        <p class="font-medium">{{ $task->employee->name ?? '-' }}</p>
                     </div>
 
                     <div class="md:col-span-2">
@@ -55,28 +58,26 @@
                     <div>                        
                         <label class="block text-sm text-gray-600 mb-2">Nama Perusahaan/Client <span class="text-red-500">*</span></label>
                         <input type="text" 
-                               name="client_name"
+                               name="client"
                                placeholder="PT ABC"
-                               value="{{ old('client_name', $task->project?->vendor?->name) }}"
-                               class="w-full bg-gray-50 border border-gray-300 focus:border-blue-500 rounded-2xl px-5 py-3 focus:outline-none" disabled>
+                               value="{{ old('client', $task->client) }}"
+                               class="w-full bg-gray-50 border border-gray-300 focus:border-blue-500 rounded-2xl px-5 py-3 focus:outline-none">
                     </div>
                     <div>
                         <label class="block text-sm text-gray-600 mb-2">Alamat Proyek <span class="text-red-500">*</span></label>
                         <input type="text" 
-                               name="project_address"
+                               name="address"
                                placeholder="jln. ABC"
-                               value="{{ old('project_address', $task->project?->vendor?->address) }}"
-                               class="w-full bg-gray-50 border border-gray-300 focus:border-blue-500 rounded-2xl px-5 py-3 focus:outline-none" disabled>
+                               value="{{ old('address', $task->address) }}"
+                               class="w-full bg-gray-50 border border-gray-300 focus:border-blue-500 rounded-2xl px-5 py-3 focus:outline-none">
                     </div>
-
                     <div>
-                        <label class="block text-sm text-gray-600 mb-2">Jenis Pekerjaan</label>
-                        <select name="job_type" 
-                                class="w-full bg-gray-50 border border-gray-300 focus:border-blue-500 rounded-2xl px-5 py-3 focus:outline-none"
-                                @if($task->status === 'completed') disabled @endif>
-                            <option value="Instalasi">Instalasi</option>
-                            <option value="Maintenance">Maintenance</option>
-                            <option value="Repair">Repair</option>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Status Task <span class="text-red-500">*</span></label>
+                        <select name="status" 
+                                class="w-full border border-gray-300 focus:border-blue-500 rounded-2xl px-5 py-4 focus:outline-none">
+                            <option value="on_progress" {{ old('status', $task->status) == 'on_progress' ? 'selected' : '' }}>On Progress</option>
+                            <option value="completed" {{ old('status', $task->status) == 'completed' ? 'selected' : '' }}>Completed</option>
+                            <option value="overdue" {{ old('status', $task->status) == 'overdue' ? 'selected' : '' }}>Overdue</option>
                         </select>
                     </div>
                     <div>
@@ -86,7 +87,7 @@
                                placeholder="PT. ABC"
                                value="{{ old('work_location', $task->project?->location) }}"
                                class="w-full bg-gray-50 border border-gray-300 focus:border-blue-500 rounded-2xl px-5 py-3 focus:outline-none" disabled>
-                    </div>
+                    </div>                    
                 </div>
                 <div class="mt-6">
                     <label class="block text-sm text-gray-600 mb-2">Pekerjaan yang Dilakukan</label>
@@ -95,8 +96,82 @@
                 <div class="mt-6">
                     <label class="block text-sm text-gray-600 mb-2">Catatan (optional)</label>
                     <textarea name="notes" rows="3" placeholder="• masukkan catatan disini (optional)" class="w-full bg-gray-50 border border-gray-300 focus:border-blue-500 rounded-3xl px-5 py-4 focus:outline-none" @if($task->status === 'completed') disabled @endif>{{old('notes',$task->notes)}}</textarea>
-                </div>                                           
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 py-4">
+                    <div>                
+                        <label class="block text-sm text-gray-600 mb-2">Mulai Pekerjaan<span class="text-red-500">*</span></label>
+                        <div class="relative">
+                            <input type="text" 
+                                id="tanggal_mulai"
+                                name="started_at"
+                                value="{{ old('started_at', $task->started_at ? $task->started_at->format('Y-m-d') : '') }}"
+                                class="w-full bg-gray-50 border border-gray-300 focus:border-blue-500 rounded-2xl px-5 py-3 focus:outline-none pr-12"
+                                placeholder="Pilih Tanggal">                            
+                        </div>
+                    </div>
+                    <div>                
+                        <label class="block text-sm text-gray-600 mb-2">Selesai Pekerjaan<span class="text-red-500">*</span></label>
+                        <div class="relative">
+                            <input type="text" 
+                                id="tanggal_mulai"
+                                name="ended_at"
+                                value="{{ old('ended_at', $task->ended_at ? $task->ended_at->format('Y-m-d') : '') }}"
+                                class="w-full bg-gray-50 border border-gray-300 focus:border-blue-500 rounded-2xl px-5 py-3 focus:outline-none pr-12"
+                                placeholder="Pilih Tanggal">                            
+                        </div>
+                    </div>                   
+                </div>
+                <div class="mt-10">
+                    <label class="block text-sm text-gray-600 mb-3">Dokumentasi Pekerjaan (Foto)</label>                
+                    @hasanyrole('staff')
+                        <div class="flex">
+                            @if($task->status !== 'completed')
+                            <div class="border-2 border-dashed border-gray-300 rounded-3xl pt-8 text-center hover:border-blue-400 transition">
+                                <input 
+                                    type="file" 
+                                    name="images[]" 
+                                    id="image-upload" 
+                                    multiple 
+                                    accept="image/*" 
+                                    class="hidden"
+                                    >
+                                <label for="image-upload" class="cursor-pointer">
+                                    <div class="w-16 h-16 mx-auto bg-gray-100 rounded-2xl flex items-center justify-center mb-4">
+                                        <i class="fas fa-cloud-upload-alt text-3xl text-gray-400"></i>
+                                    </div>
+                                    <p class="text-gray-600 font-medium">Klik untuk upload foto</p>
+                                    <p class="text-xs text-gray-500 mt-1">PNG, JPG, JPEG (maksimal 5 foto)</p>
+                                </label>
+                            </div>
+                            @endif                    
+                            @if($task->images && $task->images->count() > 0)
+                            <div class="mt-6">
+                                <p class="text-sm text-gray-500 mb-3">Foto yang sudah diupload:</p>
+                                <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                                    @foreach($task->images as $doc)
+                                    <div class="relative group">
+                                        <img src="{{ asset('storage/' . $doc->image_url) }}" 
+                                            class="w-full h-32 object-cover rounded-2xl">
+                                    </div>
+                                    @endforeach
+                                </div>
+                            </div>
+                            @endif
+                        </div>
+                    @endhasanyrole
+                </div>                
             </div>
         </form>
     </div>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            flatpickr("#tanggal_mulai", {
+                locale: "id",
+                dateFormat: "Y-m-d",
+                altInput: true,
+                altFormat: "j F Y",
+                allowInput: true
+            });
+        });
+    </script>
 </x-app-layout>

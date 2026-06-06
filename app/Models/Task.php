@@ -13,6 +13,8 @@ class Task extends Model
         'code',
         'name',
         'description',
+        'client',
+        'address',
         'to_do',
         'notes',
         'status',
@@ -31,5 +33,9 @@ class Task extends Model
 
     public function employee(){
         return $this->hasOne(Employee::class, 'id', 'assigned_at');
+    }
+
+    public function images(){
+        return $this->hasMany(TaskDocumentation::class);
     }
 }

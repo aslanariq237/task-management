@@ -1,7 +1,7 @@
 <x-app-layout>
-    @section('page-title', 'Employees')
-    @section('page-link', 'Employees - index')
-    <x-slot name="title">Employee</x-slot>
+    @section('page-title', 'User')
+    @section('page-link', 'Users - index')
+    <x-slot name="title">User</x-slot>
 
     <div class="max-w-7xl mx-auto">        
         <div class="flex flex-col md:flex-row md:items-center justify-between mb-6">                                
@@ -10,7 +10,7 @@
             <div class="flex flex-col md:flex-row gap-4 items-center justify-between">                            
                 <div class="relative flex-1 max-w-md">
                     <input type="text" 
-                           placeholder="Cari Employee..." 
+                           placeholder="Cari User..." 
                            class="w-full bg-gray-100 border border-transparent focus:border-gray-300 rounded-2xl py-3 px-5 pl-12 text-sm focus:outline-none">
                     <i class="fas fa-search absolute left-5 top-3.5 text-gray-400"></i>
                 </div>                
@@ -22,7 +22,7 @@
                     <a href="{{ route('employees.create') }}" 
                     class="bg-blue-600 hover:bg-blue-700 text-white px-5 py-3 rounded-2xl font-medium flex items-center gap-2 transition">
                         <i class="fas fa-plus"></i>
-                        Tambah Employee Baru
+                        Tambah User Baru
                     </a>
                 </div>
             </div>            
@@ -49,8 +49,14 @@
                                 <td class="py-5 text-gray-600">{{ $employee->email }}</td>
                                 <td class="py-5 text-gray-600">{{  $employee->created_at->format('D M y') }}</td>                                
                                 <td class="py-5 text-center">
-                                    <a href="#" class="bg-blue-600 hover:bg-blue-700 text-white text-xs font-medium px-5 py-2.5 rounded-2xl inline-flex items-center gap-1">
-                                        Detail <span class="text-lg leading-none">→</span>
+                                    <a href="{{ route('employees.edit', $employee) }}" 
+                                        class="bg-yellow-500 mr-2 hover:bg-yellow-600 text-white text-xs font-medium px-4 py-2.5 rounded-2xl transition">
+                                        <i class="fas fa-edit"></i>
+                                    </a>                                                                            
+                                    <a href="#" 
+                                        onclick="confirmDelete({{ $employee->id }})"
+                                        class="bg-red-600 hover:bg-red-700 text-white text-xs font-medium px-4 py-2.5 rounded-2xl transition">
+                                            <i class="fas fa-trash"></i>
                                     </a>
                                 </td>
                             </tr>  
@@ -71,4 +77,30 @@
             @endif            
         </div>
     </div>
+    <script>
+        function confirmDelete(id) {
+            Swal.fire({
+                title: 'Yakin ingin menghapus task ini?',
+                text: "Data ini tidak bisa dikembalikan!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#ef4444',
+                cancelButtonColor: '#6b7280',
+                confirmButtonText: 'Ya, Hapus!',
+                cancelButtonText: 'Batal'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    const form = document.createElement('form');
+                    form.method = 'POST';
+                    form.action = `/employees/${id}`;
+                    form.innerHTML = `
+                        @csrf
+                        @method('DELETE')
+                    `;
+                    document.body.appendChild(form);
+                    form.submit();
+                }
+            });
+        }
+    </script>
 </x-app-layout>

@@ -41,7 +41,7 @@ class EmployeeController extends Controller
      */
     public function create(Employee $employee)
     {
-        $roles = Role::where('name', '!=', 'admin')->get();                
+        $roles = Role::where('name', '!=', 'admin')->get();
         return view('pages.employees.create', compact('employee', 'roles'));
     }
 
@@ -101,36 +101,29 @@ class EmployeeController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
-    {
-        // return view('employees.edit', compact('employee'));
+    public function edit(Employee $employee)
+    {        
+        $roles = Role::where('name', '!=', 'admin')->get();
+        return view('pages.employees.edit', compact('employee', 'roles'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, Employee $employee)
     {
-        $validator = Validator::make($request->all(), [
-            'code'  => 'required|string|max:20|unique:employees,code,' . $employee->id,
+        $validator = Validator::make($request->all(), [            
             'name'  => 'required|string|max:100',
-            'email' => 'required|email|max:100|unique:employees,email,' . $employee->id,
-        ]);
+            'email' => 'required,',
+        ]);        
 
-        if ($validator->fails()) {
-            return redirect()->back()
-                             ->withErrors($validator)
-                             ->withInput();
-        }
-
-        $employee->update([
-            'code'  => strtoupper($request->code),
+        $employee->update([            
             'name'  => $request->name,
             'email' => strtolower($request->email),
-        ]);
+        ]);        
 
-        // return redirect()->route('employees.index')
-        //                  ->with('success', 'Data karyawan berhasil diperbarui.');
+        return redirect()->route('employees.index')
+                         ->with('success', 'Data karyawan berhasil diperbarui.');
     }
 
     /**
@@ -140,7 +133,7 @@ class EmployeeController extends Controller
     {
         $employee->delete();
 
-        // return redirect()->route('employees.index')
-        //                  ->with('success', 'Karyawan berhasil dihapus.');
+        return redirect()->route('employees.index')
+                         ->with('success', 'Karyawan berhasil dihapus.');
     }
 }

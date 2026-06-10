@@ -2,7 +2,7 @@
     'employee' => null,
     'route' => null,
     'method' => 'POST',
-    'roles' => []           // Kirim semua roles dari controller
+    'roles' => []
 ])
 
 <form action="{{ $route }}" method="POST" class="bg-white rounded-3xl shadow-sm p-8">
@@ -11,10 +11,9 @@
         @method('PUT')
     @endif
 
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-10">
-
-        <!-- Code -->
-        <div>
+    <div class="mb-10">
+        
+        <div class="mb-5">
             <label class="block text-sm font-medium text-gray-700 mb-2">Nama Lengkap <span class="text-red-500">*</span></label>
             <input type="text" name="name" 
                    value="{{ old('name', $employee?->name) }}"
@@ -22,17 +21,15 @@
                    placeholder="Nama Karyawan" required>
         </div>
 
-        <!-- Name -->
-        <div>            
+        <div class="mb-5">            
             <label class="block text-sm font-medium text-gray-700 mb-2">Email <span class="text-red-500">*</span></label>
             <input type="email" name="email" 
                    value="{{ old('email', $employee?->email) }}"
                    class="w-full border border-gray-300 focus:border-blue-500 rounded-2xl px-5 py-3 focus:outline-none"
                    placeholder="email@perusahaan.com" required>
         </div>        
-
-        <!-- Role -->
-        <div>
+        
+        <div class="mb-5">
             <label class="block text-sm font-medium text-gray-700 mb-2">Role / Jabatan <span class="text-red-500">*</span></label>
             <select name="role" 
                     class="w-full border border-gray-300 focus:border-blue-500 rounded-2xl px-5 py-3 focus:outline-none h-32"
@@ -45,19 +42,17 @@
                 @endforeach
             </select>            
         </div>
-
-        <!-- Name -->
+        
         <div>            
             <label class="block text-sm font-medium text-gray-700 mb-2">Password <span class="text-red-500">*</span></label>
             <input type="password" name="password" 
                    value="{{ old('password', '') }}"
                    class="w-full border border-gray-300 focus:border-blue-500 rounded-2xl px-5 py-3 focus:outline-none"
-                   placeholder="minimum 8 word" required>
+                   placeholder="minimum 8 word">
         </div>  
 
     </div>
-
-    <!-- Buttons -->
+    
     <div class="flex justify-end gap-4 mt-10">
         <a href="{{ route('employees.index') }}" 
            class="px-8 py-3 border border-gray-300 rounded-2xl font-medium hover:bg-gray-50 transition">

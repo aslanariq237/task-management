@@ -44,7 +44,10 @@ Route::middleware('auth')->group(function () {
     //employee
     Route::get('/employee', [EmployeeController::class, 'index'])->name('employees.index');
     Route::get('/employee/form', [EmployeeController::class, 'create'])->name('employees.create');
+    Route::get('/employee/{employee}', [EmployeeController::class, 'edit'])->name('employees.edit');
     Route::post('/employee/form', [EmployeeController::class, 'store'])->name('employees.store');
+    Route::put('/employee/form/{employee}', [EmployeeController::class, 'update'])->name('employees.update');
+    Route::post('/employee/{id}', [EmployeeController::class, 'destory'])->name('employees.destroy');
 
     //vendors
     Route::get('/vendor', [VendorController::class, 'index'])->name('vendors.index');

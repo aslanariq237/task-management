@@ -162,13 +162,13 @@ class TaskController extends Controller
                 foreach ($request->file('images') as $image) {
                     $filename = time() . '_' . uniqid() . '.' . $image->getClientOriginalExtension();
                     // $path = $image->store('task_documentations', 'public');
-                    $path->move(public_path('storage/tasks'), $filename);
+                    $path = $image->move(public_path('storage/tasks'), $filename);
 
                     TaskDocumentation::create([
                         'task_id'     => $task->id,
                         'project_id'  => $task->project_id,
                         'employee_id' => Auth::user()->employee_id ?? null,
-                        'image_url'   => $path,
+                        'image_url'   => 'tasks/'.$filename,
                         'location'    => $request->work_location ?? $request->address,
                         'taken_at'    => now(),
                     ]);
@@ -184,7 +184,7 @@ class TaskController extends Controller
             DB::rollBack();
 
             return redirect()->back()
-                            ->with('error', 'Terjadi kesalahan saat memperbarui task.')
+                            ->with('error', 'Terjadi kesalahan saat memperbarui task.', $e)
                             ->withInput();
         }
     }
@@ -192,7 +192,7 @@ class TaskController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Task $task, TaskDocumentation $documentation)
     {
         //
     }

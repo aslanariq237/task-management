@@ -124,7 +124,7 @@
                 <div class="mt-10">
                     <label class="block text-sm text-gray-600 mb-3">Dokumentasi Pekerjaan (Foto)</label>                
                     @hasanyrole('staff')
-                        <div class="flex">
+                        <div class="flex gap-3">
                             @if($task->status !== 'completed')
                             <div class="border-2 border-dashed border-gray-300 rounded-3xl pt-8 text-center hover:border-blue-400 transition">
                                 <input 

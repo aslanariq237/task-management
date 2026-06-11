@@ -24,7 +24,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/task/form/{task}', [TaskController::class, 'edit'])->name('tasks.edit');
     Route::put('/task/form/{task}', [TaskController::class, 'update'])->name('tasks.update');
     Route::get('/task/{task}', [TaskController::class, 'show'])->name('tasks.show');
-    Route::post('/task', [TaskController::class, 'store'])->name('tasks.store');            
+    Route::post('/task', [TaskController::class, 'store'])->name('tasks.store');
 
     // Route::get('/task/show', function() {
     //     return view('pages.tasks.show');

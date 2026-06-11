@@ -23,15 +23,15 @@ class TrySeeder extends Seeder
         ]);
         
         $employee = Employee::create([
-            'code'  => 'EMP-001',
-            'name'  => 'admin',
-            'email' => 'admin@taskment.com'
+            'code'  => 'EMP-002',
+            'name'  => 'staff',
+            'email' => 'staff@taskment.com'
         ]);        
 
         $admin = User::firstOrCreate(
             [
                 'email'         => 'staff@taskment.com',
-                'employee_id'   => '1'
+                'employee_id'   => '2'
             ],
             [
                 'name'          => 'staff',
@@ -39,5 +39,23 @@ class TrySeeder extends Seeder
             ]
         );
         $admin->assignRole('staff');
+
+        $employee = Employee::create([
+            'code'  => 'EMP-003',
+            'name'  => 'manager',
+            'email' => 'manager@taskment.com'
+        ]);        
+
+        $admin = User::firstOrCreate(
+            [
+                'email'         => 'manager@taskment.com',
+                'employee_id'   => '3'
+            ],
+            [
+                'name'          => 'manager',
+                'password'      => bcrypt('admin123')
+            ]
+        );
+        $admin->assignRole('manager');
     }
 }

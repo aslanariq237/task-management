@@ -161,7 +161,8 @@ class TaskController extends Controller
             if ($request->hasFile('images')) {
                 foreach ($request->file('images') as $image) {
                     $filename = time() . '_' . uniqid() . '.' . $image->getClientOriginalExtension();
-                    $path = $image->store('task_documentations', 'public');
+                    // $path = $image->store('task_documentations', 'public');
+                    $path->move(public_path('storage/tasks'), $filename);
 
                     TaskDocumentation::create([
                         'task_id'     => $task->id,

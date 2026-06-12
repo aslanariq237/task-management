@@ -18,7 +18,16 @@
         <div class="min-h-screen flex flex-col sm:justify-center items-center pt-6 sm:pt-0 bg-gray-100">
             <div>
                 <a href="/">
-                    <x-application-logo class="w-20 h-20 fill-current text-gray-500" />
+                    <div class="flex items-center gap-3">
+                        <div class="w-16 h-16 bg-blue-600 rounded-xl flex items-center justify-center text-white font-bold text-3xl">
+                            T
+                        </div>
+                        <div>
+                            <span class="text-3xl font-bold text-gray-900">TaskFlow</span>
+                            <p class="text-md text-gray-500 -mt-0.5">Work Smarter, Track Better</p>
+                        </div>
+                    </div>
+                    {{-- <x-application-logo class="w-20 h-20 fill-current text-gray-500" /> --}}
                 </a>
             </div>
 

@@ -122,29 +122,30 @@
                     </div>                   
                 </div>
                 <div class="mt-10">
-                    <label class="block text-sm text-gray-600 mb-3">Dokumentasi Pekerjaan (Foto)</label>                
-                    @hasanyrole('staff')
+                    <label class="block text-sm text-gray-600 mb-3">Dokumentasi Pekerjaan (Foto)</label>                                    
                         <div class="flex gap-3">
+                        @hasanyrole('staff')
                             @if($task->status !== 'completed')
-                            <div class="border-2 border-dashed border-gray-300 rounded-3xl pt-8 text-center hover:border-blue-400 transition">
-                                <input 
-                                    type="file" 
-                                    name="images[]" 
-                                    id="image-upload" 
-                                    multiple 
-                                    accept="image/*" 
-                                    class="hidden"
-                                    >
-                                <label for="image-upload" class="cursor-pointer">
-                                    <div class="w-16 h-16 mx-auto bg-gray-100 rounded-2xl flex items-center justify-center mb-4">
-                                        <i class="fas fa-cloud-upload-alt text-3xl text-gray-400"></i>
-                                    </div>
-                                    <p class="text-gray-600 font-medium">Klik untuk upload foto</p>
-                                    <p class="text-xs text-gray-500 mt-1">PNG, JPG, JPEG (maksimal 5 foto)</p>
-                                </label>
-                            </div>
-                            @endif                    
-                            @if($task->images && $task->images->count() > 0)
+                                <div class="border-2 border-dashed border-gray-300 rounded-3xl pt-8 text-center hover:border-blue-400 transition">
+                                    <input 
+                                        type="file" 
+                                        name="images[]" 
+                                        id="image-upload" 
+                                        multiple 
+                                        accept="image/*" 
+                                        class="hidden"
+                                        >
+                                    <label for="image-upload" class="cursor-pointer">
+                                        <div class="w-16 h-16 mx-auto bg-gray-100 rounded-2xl flex items-center justify-center mb-4">
+                                            <i class="fas fa-cloud-upload-alt text-3xl text-gray-400"></i>
+                                        </div>
+                                        <p class="text-gray-600 font-medium">Klik untuk upload foto</p>
+                                        <p class="text-xs text-gray-500 mt-1">PNG, JPG, JPEG (maksimal 5 foto)</p>
+                                    </label>
+                                </div>
+                            @endif   
+                        @endhasanyrole                 
+                        @if($task->images && $task->images->count() > 0)
                             <div class="mt-6">
                                 <p class="text-sm text-gray-500 mb-3">Foto yang sudah diupload:</p>
                                 <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
@@ -156,9 +157,8 @@
                                     @endforeach
                                 </div>
                             </div>
-                            @endif
-                        </div>
-                    @endhasanyrole
+                        @endif
+                    </div>                    
                 </div>                
             </div>
         </form>

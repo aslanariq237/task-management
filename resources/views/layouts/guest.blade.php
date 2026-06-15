@@ -19,7 +19,7 @@
             <div>
                 <a href="/">
                     <div class="flex items-center gap-3">
-                        <div class="w-16 h-16 bg-blue-600 rounded-xl flex items-center justify-center text-white font-bold text-3xl">
+                        <div class="px-4 py-2 bg-blue-600 rounded-xl flex items-center justify-center text-white font-bold text-3xl">
                             T
                         </div>
                         <div>

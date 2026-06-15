@@ -6,6 +6,8 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use App\Models\Task;
+use App\Models\Role;
+use App\Models\User;
 use App\Models\Project;
 
 class UserController extends Controller
@@ -31,7 +33,7 @@ class UserController extends Controller
         $onProgress = $tasks->where('status', 'on_progress');
         $overdue = $tasks->where('status', 'overdue');
 
-        if (in_array('manager', $userRoles) || in_array('admin', $userRoles)) {
+        if (in_array('manager', $userRoles)) {
             $projects = Project::get();
             return view('pages.dashboard.pm', compact(
                 'tasks',
@@ -39,7 +41,18 @@ class UserController extends Controller
                 'completed',
                 'onProgress',
                 'overdue'
-            )); 
+            ));
+        }else if(in_array('admin', $userRoles)){  
+            $roles = Role::get();
+            $user = User::get();
+            // return response()->json([
+            //     'users' => $user,
+            //     'role'  => $roles
+            // ]);
+            return view('pages.dashboard.admin', compact(
+                'user',
+                'roles'          
+            ));
         }
         // return response()->json($overdue);
         return view('pages.dashboard.staff', compact(

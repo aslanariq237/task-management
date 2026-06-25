@@ -22,7 +22,7 @@
         </button>
 
         <div class="flex items-center gap-2 lg:gap-3">
-            <div class="text-right hidden sm:block">
+            <div class="text-right hidden lg:block">
                 <p class="font-medium text-sm leading-tight">{{ Auth::user()->name ?? 'Admin' }}</p>
                 <p class="text-xs text-gray-500">
                     {{ ucfirst(Auth::user()->getRoleNames()->first() ?? 'staff') }}

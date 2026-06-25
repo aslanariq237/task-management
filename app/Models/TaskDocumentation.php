@@ -12,6 +12,7 @@ class TaskDocumentation extends Model
         'employee_id',
         'task_id',
         'image_url',
+        'type',
         'location',
         'taken_at'
     ];

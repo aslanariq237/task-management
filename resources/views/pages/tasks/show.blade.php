@@ -15,12 +15,14 @@
                         Kembali
                     </a>
                     
-                    {{-- @if($task->status !== 'completed')
-                    <button type="submit"
-                        class="bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 rounded-2xl font-medium transition">
-                        Simpan Perubahan
-                    </button>
-                    @endif --}}
+                    @hasanyrole('staff')
+                        @if($task->status !== 'completed')
+                        <button type="submit"
+                            class="bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 rounded-2xl font-medium transition">
+                            Simpan Perubahan
+                        </button>
+                        @endif
+                    @endhasanyrole                    
                 </div> 
             </div>
 
@@ -74,7 +76,9 @@
                     <div>
                         <label class="block text-sm font-medium text-gray-700 mb-2">Status Task <span class="text-red-500">*</span></label>
                         <select name="status" 
-                                disabled
+                                {{
+                                    !auth()->user()->hasAnyRole(['admin', 'manager']) ? '' : 'disabled'
+                                }}
                                 class="w-full border border-gray-300 focus:border-blue-500 rounded-2xl px-5 py-4 focus:outline-none">
                             <option value="on_progress" {{ old('status', $task->status) == 'on_progress' ? 'selected' : '' }}>On Progress</option>
                             <option value="completed" {{ old('status', $task->status) == 'completed' ? 'selected' : '' }}>Completed</option>
@@ -84,7 +88,7 @@
                     <div>
                         <label class="block text-sm text-gray-600 mb-2">Lokasi Kerja/Area</label>
                         <input type="text" 
-                                disabled
+                               disabled
                                name="work_location"
                                placeholder="PT. ABC"
                                value="{{ old('work_location', $task->project?->location) }}"
@@ -93,11 +97,11 @@
                 </div>
                 <div class="mt-6">
                     <label class="block text-sm text-gray-600 mb-2">Pekerjaan yang Dilakukan</label>
-                    <textarea name="to_do" disabled rows="4" placeholder="• Konfigurasi kamera ke DVR" class="w-full bg-gray-50 border border-gray-300 focus:border-blue-500 rounded-3xl px-5 py-4 focus:outline-none"@if($task->status === 'completed') disabled @endif>{{old('to_do',$task->to_do)}}</textarea>
+                    <textarea name="to_do" {{!auth()->user()->hasAnyRole(['admin', 'manager']) ? '' : 'disabled'}} rows="4" placeholder="• Konfigurasi kamera ke DVR" class="w-full bg-gray-50 border border-gray-300 focus:border-blue-500 rounded-3xl px-5 py-4 focus:outline-none"@if($task->status === 'completed') disabled @endif>{{old('to_do',$task->to_do)}}</textarea>
                 </div>
                 <div class="mt-6">
                     <label class="block text-sm text-gray-600 mb-2">Catatan (optional)</label>
-                    <textarea name="notes" disabled rows="3" placeholder="• masukkan catatan disini (optional)" class="w-full bg-gray-50 border border-gray-300 focus:border-blue-500 rounded-3xl px-5 py-4 focus:outline-none" @if($task->status === 'completed') disabled @endif>{{old('notes',$task->notes)}}</textarea>
+                    <textarea name="notes" {{!auth()->user()->hasAnyRole(['admin', 'manager']) ? '' : 'disabled'}} rows="3" placeholder="• masukkan catatan disini (optional)" class="w-full bg-gray-50 border border-gray-300 focus:border-blue-500 rounded-3xl px-5 py-4 focus:outline-none" @if($task->status === 'completed') disabled @endif>{{old('notes',$task->notes)}}</textarea>
                 </div>
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6 py-4">
                     <div>                
@@ -105,7 +109,9 @@
                         <div class="relative">
                             <input type="text" 
                                 id="tanggal_mulai"
-                                disabled
+                                {{
+                                    !auth()->user()->hasAnyRole(['admin', 'manager']) ? '' : 'disabled'
+                                }}
                                 name="started_at"
                                 value="{{ old('started_at', $task->started_at ? $task->started_at->format('Y-m-d') : '') }}"
                                 class="w-full bg-gray-50 border border-gray-300 focus:border-blue-500 rounded-2xl px-5 py-3 focus:outline-none pr-12"
@@ -117,7 +123,9 @@
                         <div class="relative">
                             <input type="text" 
                                 id="tanggal_mulai"
-                                disabled
+                                {{
+                                    !auth()->user()->hasAnyRole(['admin', 'manager']) ? '' : 'disabled'
+                                }}
                                 name="ended_at"
                                 value="{{ old('ended_at', $task->ended_at ? $task->ended_at->format('Y-m-d') : '') }}"
                                 class="w-full bg-gray-50 border border-gray-300 focus:border-blue-500 rounded-2xl px-5 py-3 focus:outline-none pr-12"
@@ -126,20 +134,20 @@
                     </div>                   
                 </div>
                 <div class="mt-10">
-                    <label class="block text-sm text-gray-600 mb-3">Dokumentasi Pekerjaan (Foto)</label>                                    
+                    <label class="block text-sm text-gray-600 mb-3">Dokumentasi Sebelum Pekerjaan (Foto)</label>                                    
                         <div class="flex gap-3">
                         @hasanyrole('staff')
                             @if($task->status !== 'completed')
                                 <div class="border-2 border-dashed border-gray-300 rounded-3xl pt-8 text-center hover:border-blue-400 transition">
                                     <input 
                                         type="file" 
-                                        name="images[]" 
-                                        id="image-upload" 
+                                        name="images_before[]" 
+                                        id="image-upload-before" 
                                         multiple 
                                         accept="image/*" 
                                         class="hidden"
                                         >
-                                    <label for="image-upload" class="cursor-pointer">
+                                    <label for="image-upload-before" class="cursor-pointer">
                                         <div class="w-16 h-16 mx-auto bg-gray-100 rounded-2xl flex items-center justify-center mb-4">
                                             <i class="fas fa-cloud-upload-alt text-3xl text-gray-400"></i>
                                         </div>
@@ -153,7 +161,85 @@
                             <div class="mt-6">
                                 <p class="text-sm text-gray-500 mb-3">Foto yang sudah diupload:</p>
                                 <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-                                    @foreach($task->images as $doc)
+                                    @foreach($task->images->where('type', 'before') as $doc)
+                                    <div class="relative group">
+                                        <img src="{{ asset('storage/' . $doc->image_url) }}" 
+                                            class="w-full h-32 object-cover rounded-2xl">
+                                    </div>
+                                    @endforeach
+                                </div>
+                            </div>
+                        @endif
+                    </div>                    
+                </div> 
+                <div class="mt-10">
+                    <label class="block text-sm text-gray-600 mb-3">Dokumentasi Progres Sebelum Pekerjaan (Foto)</label>                                    
+                        <div class="flex gap-3">
+                        @hasanyrole('staff')
+                            @if($task->status !== 'completed')
+                                <div class="border-2 border-dashed border-gray-300 rounded-3xl pt-8 text-center hover:border-blue-400 transition">
+                                    <input 
+                                        type="file" 
+                                        name="images_progres[]" 
+                                        id="image-upload-progres" 
+                                        multiple 
+                                        accept="image/*" 
+                                        class="hidden"
+                                        >
+                                    <label for="image-upload-progres" class="cursor-pointer">
+                                        <div class="w-16 h-16 mx-auto bg-gray-100 rounded-2xl flex items-center justify-center mb-4">
+                                            <i class="fas fa-cloud-upload-alt text-3xl text-gray-400"></i>
+                                        </div>
+                                        <p class="text-gray-600 font-medium">Klik untuk upload foto</p>
+                                        <p class="text-xs text-gray-500 mt-1">PNG, JPG, JPEG (maksimal 5 foto)</p>
+                                    </label>
+                                </div>
+                            @endif   
+                        @endhasanyrole                 
+                        @if($task->images && $task->images->count() > 0)
+                            <div class="mt-6">
+                                <p class="text-sm text-gray-500 mb-3">Foto yang sudah diupload:</p>
+                                <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                                    @foreach($task->images->where('type', 'progress') as $doc)
+                                    <div class="relative group">
+                                        <img src="{{ asset('storage/' . $doc->image_url) }}" 
+                                            class="w-full h-32 object-cover rounded-2xl">
+                                    </div>
+                                    @endforeach
+                                </div>
+                            </div>
+                        @endif
+                    </div>                    
+                </div> 
+                <div class="mt-10">
+                    <label class="block text-sm text-gray-600 mb-3">Dokumentasi Setelah Pekerjaan (Foto)</label>                                    
+                        <div class="flex gap-3">
+                        @hasanyrole('staff')
+                            @if($task->status !== 'completed')
+                                <div class="border-2 border-dashed border-gray-300 rounded-3xl pt-8 text-center hover:border-blue-400 transition">
+                                    <input 
+                                        type="file" 
+                                        name="images_after[]" 
+                                        id="image-upload-after"                                        
+                                        multiple 
+                                        accept="image/*" 
+                                        class="hidden"
+                                        >
+                                    <label for="image-upload-after" class="cursor-pointer">
+                                        <div class="w-16 h-16 mx-auto bg-gray-100 rounded-2xl flex items-center justify-center mb-4">
+                                            <i class="fas fa-cloud-upload-alt text-3xl text-gray-400"></i>
+                                        </div>
+                                        <p class="text-gray-600 font-medium">Klik untuk upload foto</p>
+                                        <p class="text-xs text-gray-500 mt-1">PNG, JPG, JPEG (maksimal 5 foto)</p>
+                                    </label>
+                                </div>
+                            @endif   
+                        @endhasanyrole                 
+                        @if($task->images && $task->images->count() > 0)
+                            <div class="mt-6">
+                                <p class="text-sm text-gray-500 mb-3">Foto yang sudah diupload:</p>
+                                <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                                    @foreach($task->images->where('type', 'after') as $doc)
                                     <div class="relative group">
                                         <img src="{{ asset('storage/' . $doc->image_url) }}" 
                                             class="w-full h-32 object-cover rounded-2xl">

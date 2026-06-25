@@ -1,7 +1,7 @@
 <header class="bg-white border-b border-gray-200 px-4 lg:px-6 py-4 flex items-center gap-4 shadow-sm sticky top-0 z-20 flex-shrink-0">    
     <button
         onclick="toggleSidebar()"
-        class="lg:hidden flex-shrink-0 w-9 h-9 flex items-center justify-center
+        class="sm:hidden flex-shrink-0 w-9 h-9 flex items-center justify-center
                rounded-xl text-gray-600 hover:bg-gray-100 transition-colors"
         aria-label="Toggle menu"
     >

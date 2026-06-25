@@ -15,12 +15,12 @@
                         Kembali
                     </a>
                     
-                    @if($task->status !== 'completed')
+                    {{-- @if($task->status !== 'completed')
                     <button type="submit"
                         class="bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 rounded-2xl font-medium transition">
                         Simpan Perubahan
                     </button>
-                    @endif
+                    @endif --}}
                 </div> 
             </div>
 
@@ -74,6 +74,7 @@
                     <div>
                         <label class="block text-sm font-medium text-gray-700 mb-2">Status Task <span class="text-red-500">*</span></label>
                         <select name="status" 
+                                disabled
                                 class="w-full border border-gray-300 focus:border-blue-500 rounded-2xl px-5 py-4 focus:outline-none">
                             <option value="on_progress" {{ old('status', $task->status) == 'on_progress' ? 'selected' : '' }}>On Progress</option>
                             <option value="completed" {{ old('status', $task->status) == 'completed' ? 'selected' : '' }}>Completed</option>
@@ -83,6 +84,7 @@
                     <div>
                         <label class="block text-sm text-gray-600 mb-2">Lokasi Kerja/Area</label>
                         <input type="text" 
+                                disabled
                                name="work_location"
                                placeholder="PT. ABC"
                                value="{{ old('work_location', $task->project?->location) }}"
@@ -91,11 +93,11 @@
                 </div>
                 <div class="mt-6">
                     <label class="block text-sm text-gray-600 mb-2">Pekerjaan yang Dilakukan</label>
-                    <textarea name="to_do" rows="4" placeholder="• Konfigurasi kamera ke DVR" class="w-full bg-gray-50 border border-gray-300 focus:border-blue-500 rounded-3xl px-5 py-4 focus:outline-none"@if($task->status === 'completed') disabled @endif>{{old('to_do',$task->to_do)}}</textarea>
+                    <textarea name="to_do" disabled rows="4" placeholder="• Konfigurasi kamera ke DVR" class="w-full bg-gray-50 border border-gray-300 focus:border-blue-500 rounded-3xl px-5 py-4 focus:outline-none"@if($task->status === 'completed') disabled @endif>{{old('to_do',$task->to_do)}}</textarea>
                 </div>
                 <div class="mt-6">
                     <label class="block text-sm text-gray-600 mb-2">Catatan (optional)</label>
-                    <textarea name="notes" rows="3" placeholder="• masukkan catatan disini (optional)" class="w-full bg-gray-50 border border-gray-300 focus:border-blue-500 rounded-3xl px-5 py-4 focus:outline-none" @if($task->status === 'completed') disabled @endif>{{old('notes',$task->notes)}}</textarea>
+                    <textarea name="notes" disabled rows="3" placeholder="• masukkan catatan disini (optional)" class="w-full bg-gray-50 border border-gray-300 focus:border-blue-500 rounded-3xl px-5 py-4 focus:outline-none" @if($task->status === 'completed') disabled @endif>{{old('notes',$task->notes)}}</textarea>
                 </div>
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6 py-4">
                     <div>                
@@ -103,6 +105,7 @@
                         <div class="relative">
                             <input type="text" 
                                 id="tanggal_mulai"
+                                disabled
                                 name="started_at"
                                 value="{{ old('started_at', $task->started_at ? $task->started_at->format('Y-m-d') : '') }}"
                                 class="w-full bg-gray-50 border border-gray-300 focus:border-blue-500 rounded-2xl px-5 py-3 focus:outline-none pr-12"
@@ -114,6 +117,7 @@
                         <div class="relative">
                             <input type="text" 
                                 id="tanggal_mulai"
+                                disabled
                                 name="ended_at"
                                 value="{{ old('ended_at', $task->ended_at ? $task->ended_at->format('Y-m-d') : '') }}"
                                 class="w-full bg-gray-50 border border-gray-300 focus:border-blue-500 rounded-2xl px-5 py-3 focus:outline-none pr-12"

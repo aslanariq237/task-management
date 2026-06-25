@@ -27,6 +27,11 @@ return new class extends Migration
                   ->onDelete('cascade');    
             $table->string('image_url')
                   ->nullable();
+            $table->enum('type', [
+                  'before',
+                  'progress',
+                  'after'
+            ])->default('before');
             $table->string('location')
                   ->nullable();
             $table->date('taken_at');

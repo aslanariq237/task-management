@@ -7,6 +7,7 @@ use Illuminate\Session\TokenMismatchException;
 use RealRashid\SweetAlert\Facades\Alert;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 use App\Models\TaskDocumentation;
 use Illuminate\Http\Request;
 use App\Models\Project;
@@ -158,11 +159,16 @@ class TaskController extends Controller
                 'ended_at'=> $request->ended_at,
             ]);       
             // return response()->json($request->hasFile('images'));
+            // dd(
+            //     $request->hasFile('images'),
+            //     $request->file('images')
+            // );
             if ($request->hasFile('images')) {
                 foreach ($request->file('images') as $image) {
                     $filename = time() . '_' . uniqid() . '.' . $image->getClientOriginalExtension();
                     // $path = $image->store('task_documentations', 'public');
                     $path = $image->move(public_path('storage/tasks'), $filename);
+
 
                     TaskDocumentation::create([
                         'task_id'     => $task->id,

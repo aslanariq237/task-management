@@ -40,7 +40,7 @@
             @hasanyrole('admin')
                 <x-nav-link href="{{ route('employees.index') }}" :active="request()->routeIs('employees.*')">
                     <i class="fas fa-users w-5 mr-3"></i> 
-                    User
+                    User Management
                 </x-nav-link>                
             @endhasanyrole
         </div>

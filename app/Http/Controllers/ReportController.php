@@ -34,13 +34,15 @@ class ReportController extends Controller
     }
 
     public function exportPDF(Task $task)
-    {
-        $tasks = Task::with(['project', 'employee'])
-                ->where('id', $task->id)
-                ->orderBy('created_at', 'desc')
-                ->get();
+    {   
+        $task->load(['project', 'employee', 'images']);
+        // $task = Task::with(['project', 'employee'])
+        //         ->where('id', $task->id)
+        //         ->orderBy('created_at', 'desc')
+        //         ->get();
+        // return response()->json($task);
 
-        $pdf = Pdf::loadView('pages.reports.pdf', compact('tasks'))
+        $pdf = Pdf::loadView('pages.reports.pdf', compact('task'))
                 ->setPaper('a4', 'landscape')
                 ->setOption('margin-top', 10)
                 ->setOption('margin-bottom', 10)

@@ -7,7 +7,6 @@ use Illuminate\Session\TokenMismatchException;
 use RealRashid\SweetAlert\Facades\Alert;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Storage;
 use App\Models\TaskDocumentation;
 use Illuminate\Http\Request;
 use App\Models\Project;
@@ -140,6 +139,11 @@ class TaskController extends Controller
      * Update the specified resource in storage.
      */
     public function update(Request $request, Task $task)
+    // {
+        // return response()->json($request->hasFile('images_before'));
+        // return response()->json($request->hasFile('images_progres'));
+    //     return response()->json($request->hasFile('images_after'));
+    // }
     {               
         $validator = Validator::make($request->all(), [
             'to_do'     => 'required|string',
@@ -157,24 +161,53 @@ class TaskController extends Controller
                 'notes'  => $request->notes,
                 'started_at'=> $request->started_at,
                 'ended_at'=> $request->ended_at,
-            ]);       
-            // return response()->json($request->hasFile('images'));
-            // dd(
-            //     $request->hasFile('images'),
-            //     $request->file('images')
-            // );
-            if ($request->hasFile('images')) {
-                foreach ($request->file('images') as $image) {
+            ]);                   
+            if ($request->hasFile('images_before')) {
+                foreach ($request->file('images_before') as $image) {
                     $filename = time() . '_' . uniqid() . '.' . $image->getClientOriginalExtension();
                     // $path = $image->store('task_documentations', 'public');
                     $path = $image->move(public_path('storage/tasks'), $filename);
-
 
                     TaskDocumentation::create([
                         'task_id'     => $task->id,
                         'project_id'  => $task->project_id,
                         'employee_id' => Auth::user()->employee_id ?? null,
                         'image_url'   => 'tasks/'.$filename,
+                        'type'        => 'before',
+                        'location'    => $request->work_location ?? $request->address,
+                        'taken_at'    => now(),
+                    ]);
+                }
+            }
+            if ($request->hasFile('images_progres')) {
+                foreach ($request->file('images_progres') as $image) {
+                    $filename = time() . '_' . uniqid() . '.' . $image->getClientOriginalExtension();
+                    // $path = $image->store('task_documentations', 'public');
+                    $path = $image->move(public_path('storage/tasks'), $filename);
+
+                    TaskDocumentation::create([
+                        'task_id'     => $task->id,
+                        'project_id'  => $task->project_id,
+                        'employee_id' => Auth::user()->employee_id ?? null,
+                        'image_url'   => 'tasks/'.$filename,
+                        'type'        => 'progress',
+                        'location'    => $request->work_location ?? $request->address,
+                        'taken_at'    => now(),
+                    ]);
+                }
+            }
+            if ($request->hasFile('images_after')) {
+                foreach ($request->file('images_after') as $image) {
+                    $filename = time() . '_' . uniqid() . '.' . $image->getClientOriginalExtension();
+                    // $path = $image->store('task_documentations', 'public');
+                    $path = $image->move(public_path('storage/tasks'), $filename);
+
+                    TaskDocumentation::create([
+                        'task_id'     => $task->id,
+                        'project_id'  => $task->project_id,
+                        'employee_id' => Auth::user()->employee_id ?? null,
+                        'image_url'   => 'tasks/'.$filename,
+                        'type'        => 'after',
                         'location'    => $request->work_location ?? $request->address,
                         'taken_at'    => now(),
                     ]);

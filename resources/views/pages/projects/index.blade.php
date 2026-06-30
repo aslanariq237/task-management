@@ -104,7 +104,7 @@
         }).then((result) => {
             if (result.isConfirmed) {
                 const form = document.getElementById('deleteForm');
-                form.action = `/projects/${id}`;   // Laravel resource route otomatis pakai DELETE
+                form.action = `/project/${id}`;   // Laravel resource route otomatis pakai DELETE
                 form.submit();
 
                 Swal.fire({

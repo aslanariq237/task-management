@@ -84,7 +84,7 @@
                class="w-full border border-gray-300 focus:border-blue-500 rounded-2xl px-5 py-3 focus:outline-none"
                placeholder="Masukkan lokasi project">
     </div>    
-    <div class="mb-10">
+    {{-- <div class="mb-10">
         <div class="flex items-center gap-3 mb-6">
             <div class="w-6 h-6 bg-blue-100 text-blue-600 rounded-xl flex items-center justify-center text-sm font-bold">4</div>
             <h2 class="text-xl font-semibold">Status Project</h2>
@@ -95,7 +95,7 @@
             <option value="completed" {{ old('status', $project?->status) == 'completed' ? 'selected' : '' }}>Completed</option>
             <option value="cancelled" {{ old('status', $project?->status) == 'cancelled' ? 'selected' : '' }}>Cancelled</option>
         </select>
-    </div>    
+    </div>     --}}
     <div class="mb-10">
         <label class="block text-sm font-medium text-gray-700 mb-2">Catatan Tambahan (Opsional)</label>
         <textarea name="notes" rows="4"

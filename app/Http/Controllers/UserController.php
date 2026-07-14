@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use App\Models\Task;
 use App\Models\Role;
+use App\Models\Employee;
 use App\Models\User;
 use App\Models\Project;
 
@@ -62,5 +63,12 @@ class UserController extends Controller
             'onProgress',
             'overdue'
         ));
+    }
+    public function destroy(string $id){
+        $user = User::findOrFail($id);
+        $employee = Employee::findOrFail($user->employee_id);
+        $user->delete();
+        $employee->delete();
+        return redirect()->route('employees.index')->with('success', 'User Berhasil di Hapus');
     }
 }

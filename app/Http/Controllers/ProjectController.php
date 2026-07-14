@@ -203,7 +203,7 @@ class ProjectController extends Controller
      */
     public function destroy(string $id)
     {
-        $project = Project::where('id', $id);        
+        $project = Project::findOrFail($id);
         $project->delete();
 
         return redirect()->route('projects.index')

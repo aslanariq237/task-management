@@ -134,17 +134,11 @@ class ProjectController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
-    {
+    public function update(Request $request, Project $project)
+    {        
         $validator = Validator::make($request->all(), [
             'name'        => 'required|string|max:150',
-            'description' => 'nullable|string',
-            'status'      => 'required|in:planning,ongoing,completed,cancelled',
-            'started_at'  => 'required|date',
-            'ended_at'    => 'nullable|date|after_or_equal:started_at',
-            'employee_id' => 'required|exists:employees,id',
-            'members'     => 'nullable|array',
-            'members.*'   => 'exists:employees,id',
+            'description' => 'nullable|string',            
         ]);
 
         if ($validator->fails()) {
@@ -156,12 +150,13 @@ class ProjectController extends Controller
 
             // Update Project
             $project->update([
-                'employee_id' => $request->employee_id,
+                'employee_id' => Auth::user()->employee_id,
                 'name'        => $request->name,
+                'location'    => $request->location,
                 'description' => $request->description,
-                'status'      => $request->status,
+                'status'      => $request->status ?? 'planned',
                 'started_at'  => $request->started_at,
-                'ended_at'    => $request->ended_at,
+                'ended_at'    => $request->ended_at,                
             ]);
 
             // Hapus semua member lama
@@ -187,8 +182,8 @@ class ProjectController extends Controller
 
             DB::commit();
 
-            // return redirect()->route('projects.index')
-            //                  ->with('success', 'Project berhasil diperbarui.');
+            return redirect()->route('projects.index')
+                             ->with('success', 'Project berhasil diperbarui.');
 
         } catch (\Exception $e) {
             DB::rollBack();

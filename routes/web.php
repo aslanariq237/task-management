@@ -34,7 +34,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/project/form', [ProjectController::class, 'create'])->name('projects.form');    
     Route::get('/project/form/{project}', [ProjectController::class, 'edit'])->name('projects.edit');
     Route::post('/project', [ProjectController::class, 'store'])->name('projects.store');
-    Route::post('/project/{project}', [ProjectController::class, 'update'])->name('projects.update');    
+    Route::put('/project/{project}', [ProjectController::class, 'update'])->name('projects.update');    
     Route::delete('/project/{id}', [ProjectController::class, 'destroy'])->name('projects.delete');
 
     //reports

@@ -64,7 +64,7 @@
                                     stroke-dasharray="94.2" stroke-dashoffset="0" stroke-linecap="round"/>
                         </svg>
                         <div class="absolute inset-0 flex flex-col items-center justify-center">
-                            <p class="text-4xl font-bold text-gray-800">2</p>
+                            <p class="text-4xl font-bold text-gray-800">{{count($tasks)}}</p>                            
                             <p class="text-xs text-gray-500">Total</p>
                         </div>
                     </div>

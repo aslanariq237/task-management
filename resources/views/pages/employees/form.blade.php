@@ -32,7 +32,7 @@
         <div class="mb-5">
             <label class="block text-sm font-medium text-gray-700 mb-2">Role / Jabatan <span class="text-red-500">*</span></label>
             <select name="role" 
-                    class="w-full border border-gray-300 focus:border-blue-500 rounded-2xl px-5 py-3 focus:outline-none h-32"
+                    class="w-full border border-gray-300 focus:border-blue-500 rounded-2xl px-5 py-3 focus:outline-none"
                     required>
                 @foreach($roles as $role)
                     <option value="{{ $role->name }}" 

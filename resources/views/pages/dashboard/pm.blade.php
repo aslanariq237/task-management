@@ -52,7 +52,7 @@
             <div class="lg:col-span-5 bg-white rounded-2xl p-6 shadow-sm">
                 <div class="flex justify-between items-center mb-4">
                     <h3 class="font-semibold text-base text-gray-800">Task Progress Summary</h3>
-                    <select class="bg-gray-100 border-0 rounded-xl px-3 py-1.5 text-xs text-gray-600 focus:outline-none">
+                    <select class="bg-gray-100 border-0 rounded-xl px-8 py-1.5 text-xs text-gray-600 focus:outline-none">
                         <option>All Projects</option>
                     </select>
                 </div>                

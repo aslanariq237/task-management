@@ -18,11 +18,12 @@
         <form action="{{ route('tasks.store') }}" method="POST" class="bg-white rounded-3xl shadow-sm p-8">
             @csrf
             <div class="flex justify-between">
-                <div class="flex items-center gap-4 mb-8">                    
+                <div class=""></div>
+                {{-- <div class="flex items-center gap-4 mb-8">                    
                     <div>
                         <h1 class="text-3xl font-semibold text-gray-800">Informasi Tasks Baru</h1>                        
                     </div>
-                </div>
+                </div> --}}
                 <div class="flex justify-end gap-4">
                     <a href="{{ route('tasks.index') }}" 
                     class="px-8 py-3 border border-gray-300 rounded-2xl font-medium hover:bg-gray-50 transition">

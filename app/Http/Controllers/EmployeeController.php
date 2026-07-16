@@ -11,7 +11,7 @@ use Spatie\Permission\Models\Role;
 class EmployeeController extends Controller
 {
     private $table = 'employees';
-    private $code = 'EMP';
+    private $code = 'EMP-';
     /**
      * Display a listing of the resource.
      */
@@ -62,13 +62,14 @@ class EmployeeController extends Controller
         }
 
         $prefix = $this->code;
-        $lastCode = Employee::latest()->first();
+        $lastCode = Employee::latest('id')->first();
         $lastNumber = $lastCode
                 ? intval(substr($lastCode->code, 4))
                 : 1000;
         $newNumber = $lastNumber + 1;
-        $newCode = "{$prefix}-{$newNumber}"; 
+        $newCode = "{$prefix}". str_pad($newNumber, 3, '0', STR_PAD_LEFT);;
 
+        // return response()->json($newCode);
         $employee = Employee::create([
             'code'  => $newCode,
             'name'  => $request->name,
